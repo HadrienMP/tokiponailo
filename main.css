@@ -44,6 +44,7 @@ h2 {
     left: 2px;
     font-size: 1.16em;
     font-weight: normal;
+    letter-spacing: 2px;
 }
 
 #haha {
@@ -60,12 +61,17 @@ header, form {
     margin: 30px 0;
 }
 
-input, button {
+input, button, select, label {
     border-radius: 0;
     color: white;
     background: none;
     border: none;
     border-bottom: 2px solid;
+}
+
+select {
+    appearance: none;
+    cursor: pointer;
 }
 
 input:focus, button:focus {
@@ -89,4 +95,19 @@ button {
     font-size: 1em;
     cursor: pointer;
     text-align: right;
+}
+
+label[for="day"] {
+    display: inline-block;
+    width: 20%;
+    padding-bottom: 4px;
+    padding-left: 5px;
+    vertical-align: bottom;
+}
+select#day {
+    width: 80%;
+    font-size: 1.3em;
+}
+option {
+    font-size: 1em;
 }

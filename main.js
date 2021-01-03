@@ -5227,159 +5227,131 @@ var $elm$core$Task$perform = F2(
 				A2($elm$core$Task$map, toMessage, task)));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Dictionary$One = {$: 'One'};
-var $author$project$Main$SelectedWord = function (a) {
-	return {$: 'SelectedWord', a: a};
+var $author$project$Day$One = {$: 'One'};
+var $author$project$Main$SelectedQuestion = function (a) {
+	return {$: 'SelectedQuestion', a: a};
 };
-var $author$project$Dictionary$English = {$: 'English'};
+var $elm$random$Random$Generator = function (a) {
+	return {$: 'Generator', a: a};
+};
+var $elm$random$Random$andThen = F2(
+	function (callback, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed) {
+				var _v1 = genA(seed);
+				var result = _v1.a;
+				var newSeed = _v1.b;
+				var _v2 = callback(result);
+				var genB = _v2.a;
+				return genB(newSeed);
+			});
+	});
+var $elm$random$Random$Generate = function (a) {
+	return {$: 'Generate', a: a};
+};
+var $elm$random$Random$Seed = F2(
+	function (a, b) {
+		return {$: 'Seed', a: a, b: b};
+	});
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$random$Random$next = function (_v0) {
+	var state0 = _v0.a;
+	var incr = _v0.b;
+	return A2($elm$random$Random$Seed, ((state0 * 1664525) + incr) >>> 0, incr);
+};
+var $elm$random$Random$initialSeed = function (x) {
+	var _v0 = $elm$random$Random$next(
+		A2($elm$random$Random$Seed, 0, 1013904223));
+	var state1 = _v0.a;
+	var incr = _v0.b;
+	var state2 = (state1 + x) >>> 0;
+	return $elm$random$Random$next(
+		A2($elm$random$Random$Seed, state2, incr));
+};
+var $elm$time$Time$Name = function (a) {
+	return {$: 'Name', a: a};
+};
+var $elm$time$Time$Offset = function (a) {
+	return {$: 'Offset', a: a};
+};
+var $elm$time$Time$Zone = F2(
+	function (a, b) {
+		return {$: 'Zone', a: a, b: b};
+	});
+var $elm$time$Time$customZone = $elm$time$Time$Zone;
+var $elm$time$Time$Posix = function (a) {
+	return {$: 'Posix', a: a};
+};
+var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
+var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
+var $elm$time$Time$posixToMillis = function (_v0) {
+	var millis = _v0.a;
+	return millis;
+};
+var $elm$random$Random$init = A2(
+	$elm$core$Task$andThen,
+	function (time) {
+		return $elm$core$Task$succeed(
+			$elm$random$Random$initialSeed(
+				$elm$time$Time$posixToMillis(time)));
+	},
+	$elm$time$Time$now);
+var $elm$random$Random$step = F2(
+	function (_v0, seed) {
+		var generator = _v0.a;
+		return generator(seed);
+	});
+var $elm$random$Random$onEffects = F3(
+	function (router, commands, seed) {
+		if (!commands.b) {
+			return $elm$core$Task$succeed(seed);
+		} else {
+			var generator = commands.a.a;
+			var rest = commands.b;
+			var _v1 = A2($elm$random$Random$step, generator, seed);
+			var value = _v1.a;
+			var newSeed = _v1.b;
+			return A2(
+				$elm$core$Task$andThen,
+				function (_v2) {
+					return A3($elm$random$Random$onEffects, router, rest, newSeed);
+				},
+				A2($elm$core$Platform$sendToApp, router, value));
+		}
+	});
+var $elm$random$Random$onSelfMsg = F3(
+	function (_v0, _v1, seed) {
+		return $elm$core$Task$succeed(seed);
+	});
+var $elm$random$Random$map = F2(
+	function (func, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var _v1 = genA(seed0);
+				var a = _v1.a;
+				var seed1 = _v1.b;
+				return _Utils_Tuple2(
+					func(a),
+					seed1);
+			});
+	});
+var $elm$random$Random$cmdMap = F2(
+	function (func, _v0) {
+		var generator = _v0.a;
+		return $elm$random$Random$Generate(
+			A2($elm$random$Random$map, func, generator));
+	});
+_Platform_effectManagers['Random'] = _Platform_createManager($elm$random$Random$init, $elm$random$Random$onEffects, $elm$random$Random$onSelfMsg, $elm$random$Random$cmdMap);
+var $elm$random$Random$command = _Platform_leaf('Random');
+var $elm$random$Random$generate = F2(
+	function (tagger, generator) {
+		return $elm$random$Random$command(
+			$elm$random$Random$Generate(
+				A2($elm$random$Random$map, tagger, generator)));
+	});
 var $author$project$Dictionary$French = {$: 'French'};
-var $author$project$Dictionary$step1 = _List_fromArray(
-	[
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['je'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['I']))
-			]),
-		tokiPona: 'mi'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['tu', 'vous'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['you']))
-			]),
-		tokiPona: 'sina'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['il', 'elle', 'ils', 'elles'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['he', 'she', 'it', 'they']))
-			]),
-		tokiPona: 'ona'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['chose'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['thing']))
-			]),
-		tokiPona: 'ijo'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['personne'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['person']))
-			]),
-		tokiPona: 'jan'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['bien', 'bon', 'fixe'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['good', 'fix']))
-			]),
-		tokiPona: 'pona'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['mauvais'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['bad']))
-			]),
-		tokiPona: 'ike'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['manger', 'nourriture'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['to eat', 'food']))
-			]),
-		tokiPona: 'moku'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['grand', 'important'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['big', 'important']))
-			]),
-		tokiPona: 'suli'
-	},
-		{
-		meanings: _List_fromArray(
-			[
-				_Utils_Tuple2(
-				$author$project$Dictionary$French,
-				_List_fromArray(
-					['langage', 'parler', 'salut'])),
-				_Utils_Tuple2(
-				$author$project$Dictionary$English,
-				_List_fromArray(
-					['language', 'to speak', 'hello']))
-			]),
-		tokiPona: 'toki'
-	}
-	]);
-var $author$project$Dictionary$all = _List_fromArray(
-	[
-		_Utils_Tuple2($author$project$Dictionary$One, $author$project$Dictionary$step1)
-	]);
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5388,9 +5360,6 @@ var $elm$core$List$append = F2(
 			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
 		}
 	});
-var $elm$random$Random$Generator = function (a) {
-	return {$: 'Generator', a: a};
-};
 var $elm$random$Random$constant = function (value) {
 	return $elm$random$Random$Generator(
 		function (seed) {
@@ -5435,16 +5404,6 @@ var $elm_community$random_extra$Random$List$get = F2(
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Basics$negate = function (n) {
 	return -n;
-};
-var $elm$random$Random$Seed = F2(
-	function (a, b) {
-		return {$: 'Seed', a: a, b: b};
-	});
-var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
-var $elm$random$Random$next = function (_v0) {
-	var state0 = _v0.a;
-	var incr = _v0.b;
-	return A2($elm$random$Random$Seed, ((state0 * 1664525) + incr) >>> 0, incr);
 };
 var $elm$core$Bitwise$xor = _Bitwise_xor;
 var $elm$random$Random$peel = function (_v0) {
@@ -5491,19 +5450,6 @@ var $elm$core$List$isEmpty = function (xs) {
 		return false;
 	}
 };
-var $elm$random$Random$map = F2(
-	function (func, _v0) {
-		var genA = _v0.a;
-		return $elm$random$Random$Generator(
-			function (seed0) {
-				var _v1 = genA(seed0);
-				var a = _v1.a;
-				var seed1 = _v1.b;
-				return _Utils_Tuple2(
-					func(a),
-					seed1);
-			});
-	});
 var $elm$core$List$takeReverse = F3(
 	function (n, list, kept) {
 		takeReverse:
@@ -5656,86 +5602,16 @@ var $elm_community$random_extra$Random$List$choose = function (list) {
 			gen);
 	}
 };
-var $elm$random$Random$Generate = function (a) {
-	return {$: 'Generate', a: a};
-};
-var $elm$random$Random$initialSeed = function (x) {
-	var _v0 = $elm$random$Random$next(
-		A2($elm$random$Random$Seed, 0, 1013904223));
-	var state1 = _v0.a;
-	var incr = _v0.b;
-	var state2 = (state1 + x) >>> 0;
-	return $elm$random$Random$next(
-		A2($elm$random$Random$Seed, state2, incr));
-};
-var $elm$time$Time$Name = function (a) {
-	return {$: 'Name', a: a};
-};
-var $elm$time$Time$Offset = function (a) {
-	return {$: 'Offset', a: a};
-};
-var $elm$time$Time$Zone = F2(
-	function (a, b) {
-		return {$: 'Zone', a: a, b: b};
-	});
-var $elm$time$Time$customZone = $elm$time$Time$Zone;
-var $elm$time$Time$Posix = function (a) {
-	return {$: 'Posix', a: a};
-};
-var $elm$time$Time$millisToPosix = $elm$time$Time$Posix;
-var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
-var $elm$time$Time$posixToMillis = function (_v0) {
-	var millis = _v0.a;
-	return millis;
-};
-var $elm$random$Random$init = A2(
-	$elm$core$Task$andThen,
-	function (time) {
-		return $elm$core$Task$succeed(
-			$elm$random$Random$initialSeed(
-				$elm$time$Time$posixToMillis(time)));
-	},
-	$elm$time$Time$now);
-var $elm$random$Random$step = F2(
-	function (_v0, seed) {
-		var generator = _v0.a;
-		return generator(seed);
-	});
-var $elm$random$Random$onEffects = F3(
-	function (router, commands, seed) {
-		if (!commands.b) {
-			return $elm$core$Task$succeed(seed);
+var $author$project$Main$duo = F2(
+	function (word, _v0) {
+		var mMeaning = _v0.a;
+		if (mMeaning.$ === 'Just') {
+			var meaning = mMeaning.a;
+			return $elm$core$Maybe$Just(
+				_Utils_Tuple2(word, meaning));
 		} else {
-			var generator = commands.a.a;
-			var rest = commands.b;
-			var _v1 = A2($elm$random$Random$step, generator, seed);
-			var value = _v1.a;
-			var newSeed = _v1.b;
-			return A2(
-				$elm$core$Task$andThen,
-				function (_v2) {
-					return A3($elm$random$Random$onEffects, router, rest, newSeed);
-				},
-				A2($elm$core$Platform$sendToApp, router, value));
+			return $elm$core$Maybe$Nothing;
 		}
-	});
-var $elm$random$Random$onSelfMsg = F3(
-	function (_v0, _v1, seed) {
-		return $elm$core$Task$succeed(seed);
-	});
-var $elm$random$Random$cmdMap = F2(
-	function (func, _v0) {
-		var generator = _v0.a;
-		return $elm$random$Random$Generate(
-			A2($elm$random$Random$map, func, generator));
-	});
-_Platform_effectManagers['Random'] = _Platform_createManager($elm$random$Random$init, $elm$random$Random$onEffects, $elm$random$Random$onSelfMsg, $elm$random$Random$cmdMap);
-var $elm$random$Random$command = _Platform_leaf('Random');
-var $elm$random$Random$generate = F2(
-	function (tagger, generator) {
-		return $elm$random$Random$command(
-			$elm$random$Random$Generate(
-				A2($elm$random$Random$map, tagger, generator)));
 	});
 var $elm$core$List$filter = F2(
 	function (isGood, list) {
@@ -5776,8 +5652,6 @@ var $author$project$ValueList$get = F2(
 					},
 					list)));
 	});
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
 		if (maybe.$ === 'Just') {
@@ -5787,33 +5661,410 @@ var $elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var $author$project$Main$pickWord = function (step) {
-	return A2(
-		$elm$core$Maybe$withDefault,
-		$elm$core$Platform$Cmd$none,
-		A2(
-			$elm$core$Maybe$map,
-			function (words) {
-				return A2(
-					$elm$random$Random$generate,
-					$author$project$Main$SelectedWord,
-					$elm_community$random_extra$Random$List$choose(words));
+var $author$project$Main$pickMeaning = function (_v0) {
+	var mWord = _v0.a;
+	if (mWord.$ === 'Just') {
+		var word = mWord.a;
+		return A2(
+			$elm$random$Random$map,
+			function (chosenMeaning) {
+				return A2($author$project$Main$duo, word, chosenMeaning);
 			},
-			A2($author$project$ValueList$get, step, $author$project$Dictionary$all)));
+			$elm_community$random_extra$Random$List$choose(
+				A2(
+					$elm$core$Maybe$withDefault,
+					_List_Nil,
+					A2($author$project$ValueList$get, $author$project$Dictionary$French, word.meanings))));
+	} else {
+		return $elm$random$Random$constant($elm$core$Maybe$Nothing);
+	}
+};
+var $author$project$Day$Two = {$: 'Two'};
+var $author$project$Dictionary$English = {$: 'English'};
+var $author$project$Dictionary$day1 = _List_fromArray(
+	[
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['je'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['I']))
+			]),
+		tokiPona: 'mi'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['tu', 'vous'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['you']))
+			]),
+		tokiPona: 'sina'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['il', 'elle', 'ils', 'elles'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['he', 'she', 'it', 'they']))
+			]),
+		tokiPona: 'ona'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['chose'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['thing']))
+			]),
+		tokiPona: 'ijo'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['personne'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['person']))
+			]),
+		tokiPona: 'jan'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['bien', 'bon', 'fixe'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['good', 'fix']))
+			]),
+		tokiPona: 'pona'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['mauvais'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['bad']))
+			]),
+		tokiPona: 'ike'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['manger', 'nourriture'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['to eat', 'food']))
+			]),
+		tokiPona: 'moku'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['grand', 'important'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['big', 'important']))
+			]),
+		tokiPona: 'suli'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['langage', 'parler', 'salut'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['language', 'to speak', 'hello']))
+			]),
+		tokiPona: 'toki'
+	}
+	]);
+var $author$project$Dictionary$day2 = _List_fromArray(
+	[
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['petit'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['small']))
+			]),
+		tokiPona: 'lili'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['eau', 'liquide'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['water', 'liquide']))
+			]),
+		tokiPona: 'telo'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['soleil'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['sun']))
+			]),
+		tokiPona: 'suno'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['outil'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['tool']))
+			]),
+		tokiPona: 'ilo'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['fruit', 'légume'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['fruit', 'vegetable']))
+			]),
+		tokiPona: 'kili'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['ça'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['this', 'that']))
+			]),
+		tokiPona: 'ni'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['insecte', 'vermine'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['pest', 'insect']))
+			]),
+		tokiPona: 'pipi'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['endroit'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['place']))
+			]),
+		tokiPona: 'ma'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['erreur'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['mistake']))
+			]),
+		tokiPona: 'pakala'
+	}
+	]);
+var $author$project$Dictionary$all = _List_fromArray(
+	[
+		_Utils_Tuple2($author$project$Day$One, $author$project$Dictionary$day1),
+		_Utils_Tuple2($author$project$Day$Two, $author$project$Dictionary$day2)
+	]);
+var $author$project$Main$pickWordFromDay = function (day) {
+	return $elm_community$random_extra$Random$List$choose(
+		A2(
+			$elm$core$Maybe$withDefault,
+			_List_Nil,
+			A2($author$project$ValueList$get, day, $author$project$Dictionary$all)));
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
+var $elm$random$Random$float = F2(
+	function (a, b) {
+		return $elm$random$Random$Generator(
+			function (seed0) {
+				var seed1 = $elm$random$Random$next(seed0);
+				var range = $elm$core$Basics$abs(b - a);
+				var n1 = $elm$random$Random$peel(seed1);
+				var n0 = $elm$random$Random$peel(seed0);
+				var lo = (134217727 & n1) * 1.0;
+				var hi = (67108863 & n0) * 1.0;
+				var val = ((hi * 134217728.0) + lo) / 9007199254740992.0;
+				var scaled = (val * range) + a;
+				return _Utils_Tuple2(
+					scaled,
+					$elm$random$Random$next(seed1));
+			});
+	});
+var $elm$random$Random$getByWeight = F3(
+	function (_v0, others, countdown) {
+		getByWeight:
+		while (true) {
+			var weight = _v0.a;
+			var value = _v0.b;
+			if (!others.b) {
+				return value;
+			} else {
+				var second = others.a;
+				var otherOthers = others.b;
+				if (_Utils_cmp(
+					countdown,
+					$elm$core$Basics$abs(weight)) < 1) {
+					return value;
+				} else {
+					var $temp$_v0 = second,
+						$temp$others = otherOthers,
+						$temp$countdown = countdown - $elm$core$Basics$abs(weight);
+					_v0 = $temp$_v0;
+					others = $temp$others;
+					countdown = $temp$countdown;
+					continue getByWeight;
+				}
+			}
+		}
+	});
+var $elm$core$List$sum = function (numbers) {
+	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
+};
+var $elm$random$Random$weighted = F2(
+	function (first, others) {
+		var normalize = function (_v0) {
+			var weight = _v0.a;
+			return $elm$core$Basics$abs(weight);
+		};
+		var total = normalize(first) + $elm$core$List$sum(
+			A2($elm$core$List$map, normalize, others));
+		return A2(
+			$elm$random$Random$map,
+			A2($elm$random$Random$getByWeight, first, others),
+			A2($elm$random$Random$float, 0, total));
+	});
+var $author$project$Main$randomizeDay = function (day) {
+	if (day.$ === 'One') {
+		return $elm$random$Random$constant($author$project$Day$One);
+	} else {
+		return A2(
+			$elm$random$Random$weighted,
+			_Utils_Tuple2(80, $author$project$Day$Two),
+			_List_fromArray(
+				[
+					_Utils_Tuple2(20, $author$project$Day$One)
+				]));
+	}
+};
+var $author$project$Main$pickWord = function (day) {
+	return A2(
+		$elm$random$Random$generate,
+		$author$project$Main$SelectedQuestion,
+		A2(
+			$elm$random$Random$andThen,
+			$author$project$Main$pickMeaning,
+			A2(
+				$elm$random$Random$andThen,
+				$author$project$Main$pickWordFromDay,
+				$author$project$Main$randomizeDay(day))));
 };
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{actual: '', expected: 'suli', previousActual: '', previousExpected: '', previousWord: '', right: $elm$core$Maybe$Nothing, step: $author$project$Dictionary$One, word: 'big'},
-		$author$project$Main$pickWord($author$project$Dictionary$One));
+		{actual: '', day: $author$project$Day$One, expected: 'suli', previousActual: '', previousExpected: '', previousWord: '', right: $elm$core$Maybe$Nothing, word: 'big'},
+		$author$project$Main$pickWord($author$project$Day$One));
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$none;
 };
-var $author$project$Main$SelectedMeaning = function (a) {
-	return {$: 'SelectedMeaning', a: a};
-};
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		_v0$4:
@@ -5838,38 +6089,27 @@ var $author$project$Main$update = F2(
 								right: $elm$core$Maybe$Just(
 									_Utils_eq(model.actual, model.expected))
 							}),
-						$author$project$Main$pickWord($author$project$Dictionary$One));
-				case 'SelectedWord':
-					if (msg.a.a.$ === 'Just') {
-						var _v1 = msg.a;
-						var word = _v1.a.a;
+						$author$project$Main$pickWord(model.day));
+				case 'SelectDay':
+					if (msg.a.$ === 'Just') {
+						var day = msg.a.a;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{expected: word.tokiPona}),
-							A2(
-								$elm$core$Maybe$withDefault,
-								$elm$core$Platform$Cmd$none,
-								A2(
-									$elm$core$Maybe$map,
-									function (meaning) {
-										return A2(
-											$elm$random$Random$generate,
-											$author$project$Main$SelectedMeaning,
-											$elm_community$random_extra$Random$List$choose(meaning));
-									},
-									A2($author$project$ValueList$get, $author$project$Dictionary$French, word.meanings))));
+								{day: day}),
+							$author$project$Main$pickWord(day));
 					} else {
 						break _v0$4;
 					}
 				default:
-					if (msg.a.a.$ === 'Just') {
-						var _v2 = msg.a;
-						var meaning = _v2.a.a;
+					if (msg.a.$ === 'Just') {
+						var _v1 = msg.a.a;
+						var word = _v1.a;
+						var meaning = _v1.b;
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
-								{word: meaning}),
+								{expected: word.tokiPona, word: meaning}),
 							$elm$core$Platform$Cmd$none);
 					} else {
 						break _v0$4;
@@ -5879,6 +6119,9 @@ var $author$project$Main$update = F2(
 		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 	});
 var $author$project$Main$Check = {$: 'Check'};
+var $author$project$Main$SelectDay = function (a) {
+	return {$: 'SelectDay', a: a};
+};
 var $author$project$Main$TokiPonaChanged = function (a) {
 	return {$: 'TokiPonaChanged', a: a};
 };
@@ -5892,10 +6135,10 @@ var $elm$html$Html$Attributes$boolProperty = F2(
 	});
 var $elm$html$Html$Attributes$autofocus = $elm$html$Html$Attributes$boolProperty('autofocus');
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$html$Html$form = _VirtualDom_node('form');
-var $elm$html$Html$h1 = _VirtualDom_node('h1');
-var $elm$html$Html$header = _VirtualDom_node('header');
+var $elm$html$Html$option = _VirtualDom_node('option');
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
+var $elm$core$Debug$toString = _Debug_toString;
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5904,8 +6147,40 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			key,
 			$elm$json$Json$Encode$string(string));
 	});
+var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
+var $author$project$Main$dayOption = function (day) {
+	return A2(
+		$elm$html$Html$option,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$value(
+				$elm$core$Debug$toString(day))
+			]),
+		_List_fromArray(
+			[
+				$elm$html$Html$text(
+				$elm$core$Debug$toString(day))
+			]));
+};
+var $elm$html$Html$div = _VirtualDom_node('div');
+var $elm$html$Html$Attributes$for = $elm$html$Html$Attributes$stringProperty('htmlFor');
+var $elm$html$Html$form = _VirtualDom_node('form');
+var $author$project$Day$fromString = function (string) {
+	switch (string) {
+		case 'One':
+			return $elm$core$Maybe$Just($author$project$Day$One);
+		case 'Two':
+			return $elm$core$Maybe$Just($author$project$Day$Two);
+		default:
+			return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$html$Html$h1 = _VirtualDom_node('h1');
+var $elm$html$Html$h2 = _VirtualDom_node('h2');
+var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $elm$html$Html$input = _VirtualDom_node('input');
+var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$core$String$cons = _String_cons;
 var $elm$core$Tuple$mapFirst = F2(
 	function (func, _v0) {
@@ -6002,11 +6277,9 @@ var $elm$html$Html$Events$onSubmit = function (msg) {
 };
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
+var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
-var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $author$project$Main$view = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -6035,6 +6308,13 @@ var $author$project$Main$view = function (model) {
 								_List_fromArray(
 									[
 										$elm$html$Html$text('Toki Pona')
+									])),
+								A2(
+								$elm$html$Html$h2,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('12 days, vocabulary')
 									]))
 							])),
 						A2(
@@ -6095,6 +6375,39 @@ var $author$project$Main$view = function (model) {
 							[
 								$elm$html$Html$text(
 								$author$project$Main$message(model))
+							])),
+						A2(
+						$elm$html$Html$form,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$label,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$for('day')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Day')
+									])),
+								A2(
+								$elm$html$Html$select,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$id('day'),
+										$elm$html$Html$Attributes$placeholder('Day'),
+										$elm$html$Html$Events$onInput(
+										function (dayStr) {
+											return $author$project$Main$SelectDay(
+												$author$project$Day$fromString(dayStr));
+										})
+									]),
+								A2(
+									$elm$core$List$map,
+									$author$project$Main$dayOption,
+									_List_fromArray(
+										[$author$project$Day$One, $author$project$Day$Two])))
 							]))
 					]))
 			]));

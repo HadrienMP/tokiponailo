@@ -1,9 +1,11 @@
 module Main exposing (..)
 
 import Browser
-import Dictionary exposing (Language(..), Step(..), Word)
-import Html exposing (Html, button, div, form, h1, header, input, p, span, text)
-import Html.Attributes exposing (autofocus, id, placeholder, type_, value)
+import Day exposing (Day(..))
+import Debug exposing (toString)
+import Dictionary exposing (Language(..), Word)
+import Html exposing (Html, button, div, form, h1, h2, header, input, label, option, p, select, span, text)
+import Html.Attributes exposing (autofocus, for, id, placeholder, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Random
 import Random.List
@@ -28,7 +30,7 @@ main =
 
 
 type alias Model =
-    { step : Step
+    { day : Day
     , word : String
     , expected : String
     , actual : String
@@ -41,7 +43,7 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { step = One
+    ( { day = One
       , word = "big"
       , expected = "suli"
       , actual = ""
@@ -61,8 +63,8 @@ init _ =
 type Msg
     = Check
     | TokiPonaChanged String
-    | SelectedWord ( Maybe Word, List Word )
-    | SelectedMeaning ( Maybe String, List String )
+    | SelectedQuestion (Maybe ( Word, String ))
+    | SelectDay (Maybe Day)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -79,27 +81,64 @@ update msg model =
                 , previousExpected = model.expected
                 , previousWord = model.word
               }
-            , pickWord One
+            , pickWord model.day
             )
 
-        SelectedWord ( Just word, _ ) ->
-            ( { model | expected = word.tokiPona }
-            , ValueList.get French word.meanings
-                |> Maybe.map (\meaning -> Random.List.choose meaning |> Random.generate SelectedMeaning)
-                |> Maybe.withDefault Cmd.none
-            )
+        SelectDay (Just day) ->
+            ( { model | day = day }, pickWord day )
 
-        SelectedMeaning ( Just meaning, _ ) ->
-            ( { model | word = meaning }, Cmd.none )
+        SelectedQuestion (Just ( word, meaning )) ->
+            ( { model | word = meaning, expected = word.tokiPona }, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
 
 
-pickWord step =
-    ValueList.get step Dictionary.all
-        |> Maybe.map (\words -> Random.List.choose words |> Random.generate SelectedWord)
-        |> Maybe.withDefault Cmd.none
+pickWord day =
+    randomizeDay day
+        |> Random.andThen pickWordFromDay
+        |> Random.andThen pickMeaning
+        |> Random.generate SelectedQuestion
+
+
+randomizeDay : Day -> Random.Generator Day
+randomizeDay day =
+    case day of
+        One ->
+            Random.constant One
+
+        Two ->
+            Random.weighted ( 80, Two ) [ ( 20, One ) ]
+
+
+pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
+pickWordFromDay day =
+    ValueList.get day Dictionary.all
+        |> Maybe.withDefault []
+        |> Random.List.choose
+
+
+pickMeaning : ( Maybe Word, List Word ) -> Random.Generator (Maybe ( Word, String ))
+pickMeaning ( mWord, _ ) =
+    case mWord of
+        Just word ->
+            ValueList.get French word.meanings
+                |> Maybe.withDefault []
+                |> Random.List.choose
+                |> Random.map (\chosenMeaning -> duo word chosenMeaning)
+
+        Nothing ->
+            Random.constant Nothing
+
+
+duo : Word -> ( Maybe String, List String ) -> Maybe ( Word, String )
+duo word ( mMeaning, _ ) =
+    case mMeaning of
+        Just meaning ->
+            Just ( word, meaning )
+
+        Nothing ->
+            Nothing
 
 
 
@@ -113,6 +152,7 @@ view model =
             [ header
                 []
                 [ h1 [] [ text "Toki Pona" ]
+                , h2 [] [ text "12 days, vocabulary"]
                 ]
             , p [ id "haha" ]
                 [ text "Traduisez "
@@ -134,8 +174,20 @@ view model =
                     [ text "Vérifier" ]
                 ]
             , p [] [ text <| message model ]
+            , form
+                []
+                [ label [ for "day" ] [ text "Day" ]
+                , select
+                    [ id "day", placeholder "Day", onInput (\dayStr -> Day.fromString dayStr |> SelectDay) ]
+                    (List.map dayOption [ One, Two ])
+                ]
             ]
         ]
+
+
+dayOption : Day -> Html Msg
+dayOption day =
+    option [ value <| toString day ] [ text <| toString day ]
 
 
 message : Model -> String

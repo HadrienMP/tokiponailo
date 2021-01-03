@@ -1,6 +1,7 @@
 module Dictionary exposing (..)
 
 
+import Day exposing (Day(..))
 type Language
     = French
     | English
@@ -16,17 +17,14 @@ type alias Word =
     }
 
 
-type Step
-    = One
-
-
-all : List ( Step, List Word )
+all : List ( Day, List Word )
 all =
-    [ ( One, step1 )
+    [ ( One, day1 )
+    , ( Two, day2 )
     ]
 
 
-step1 =
+day1 =
     [ { tokiPona = "mi"
       , meanings = [ ( French, [ "je" ] ), ( English, [ "I" ] ) ]
       }
@@ -56,5 +54,36 @@ step1 =
       }
     , { tokiPona = "toki"
       , meanings = [ ( French, [ "langage", "parler", "salut" ] ), ( English, [ "language", "to speak", "hello" ] ) ]
+      }
+    ]
+
+
+day2 =
+    [ { tokiPona = "lili"
+      , meanings = [ ( French, [ "petit" ] ), ( English, [ "small" ] ) ]
+      }
+    , { tokiPona = "telo"
+      , meanings = [ ( French, [ "eau", "liquide" ] ), ( English, [ "water", "liquide" ] ) ]
+      }
+    , { tokiPona = "suno"
+      , meanings = [ ( French, [ "soleil" ] ), ( English, [ "sun" ] ) ]
+      }
+    , { tokiPona = "ilo"
+      , meanings = [ ( French, [ "outil" ] ), ( English, [ "tool" ] ) ]
+      }
+    , { tokiPona = "kili"
+      , meanings = [ ( French, [ "fruit", "légume" ] ), ( English, [ "fruit", "vegetable" ] ) ]
+      }
+    , { tokiPona = "ni"
+      , meanings = [ ( French, [ "ça" ] ), ( English, [ "this", "that" ] ) ]
+      }
+    , { tokiPona = "pipi"
+      , meanings = [ ( French, [ "insecte", "vermine" ] ), ( English, [ "pest", "insect" ] ) ]
+      }
+    , { tokiPona = "ma"
+      , meanings = [ ( French, [ "endroit" ] ), ( English, [ "place" ] ) ]
+      }
+    , { tokiPona = "pakala"
+      , meanings = [ ( French, [ "erreur" ] ), ( English, [ "mistake" ] ) ]
       }
     ]
