@@ -1,3 +1,4 @@
 # Project exclude paths
 /elm-stuff/
 /node_modules/
+.idea
