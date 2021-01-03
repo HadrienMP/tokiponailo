@@ -6012,81 +6012,90 @@ var $author$project$Main$view = function (model) {
 		$elm$html$Html$div,
 		_List_fromArray(
 			[
-				$elm$html$Html$Attributes$id('main')
+				$elm$html$Html$Attributes$id('under')
 			]),
 		_List_fromArray(
 			[
 				A2(
-				$elm$html$Html$header,
-				_List_Nil,
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$id('main')
+					]),
 				_List_fromArray(
 					[
 						A2(
-						$elm$html$Html$h1,
+						$elm$html$Html$header,
 						_List_Nil,
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Toki Pona')
-							]))
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$id('haha')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Traduisez '),
-						A2(
-						$elm$html$Html$span,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$id('to-translate')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(model.word)
+								A2(
+								$elm$html$Html$h1,
+								_List_Nil,
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Toki Pona')
+									]))
 							])),
-						$elm$html$Html$text(' en toki pona')
-					])),
-				A2(
-				$elm$html$Html$form,
-				_List_fromArray(
-					[
-						$elm$html$Html$Events$onSubmit($author$project$Main$Check)
-					]),
-				_List_fromArray(
-					[
 						A2(
-						$elm$html$Html$input,
+						$elm$html$Html$p,
 						_List_fromArray(
 							[
-								$elm$html$Html$Attributes$type_('text'),
-								$elm$html$Html$Attributes$placeholder('toki pona'),
-								$elm$html$Html$Events$onInput($author$project$Main$TokiPonaChanged),
-								$elm$html$Html$Attributes$value(model.actual),
-								$elm$html$Html$Attributes$autofocus(true)
-							]),
-						_List_Nil),
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$type_('submit')
+								$elm$html$Html$Attributes$id('haha')
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Vérifier')
+								$elm$html$Html$text('Traduisez '),
+								A2(
+								$elm$html$Html$span,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$id('to-translate')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(model.word)
+									])),
+								$elm$html$Html$text(' en toki pona')
+							])),
+						A2(
+						$elm$html$Html$form,
+						_List_fromArray(
+							[
+								$elm$html$Html$Events$onSubmit($author$project$Main$Check)
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$input,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$type_('text'),
+										$elm$html$Html$Attributes$placeholder('toki pona'),
+										$elm$html$Html$Events$onInput($author$project$Main$TokiPonaChanged),
+										$elm$html$Html$Attributes$value(model.actual),
+										$elm$html$Html$Attributes$autofocus(true)
+									]),
+								_List_Nil),
+								A2(
+								$elm$html$Html$button,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$type_('submit')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('Vérifier')
+									]))
+							])),
+						A2(
+						$elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								$author$project$Main$message(model))
 							]))
-					])),
-				A2(
-				$elm$html$Html$p,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						$author$project$Main$message(model))
 					]))
 			]));
 };

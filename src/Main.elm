@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Dictionary exposing (Language(..), Step(..), Word)
-import Html exposing (Html, button, div, form, h1, h2, header, input, p, span, text)
-import Html.Attributes exposing (autofocus, class, id, placeholder, type_, value)
+import Html exposing (Html, button, div, form, h1, header, input, p, span, text)
+import Html.Attributes exposing (autofocus, id, placeholder, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Random
 import Random.List
@@ -34,7 +34,7 @@ type alias Model =
     , actual : String
     , previousWord : String
     , previousActual : String
-    , previousExpected: String
+    , previousExpected : String
     , right : Maybe Bool
     }
 
@@ -108,31 +108,33 @@ pickWord step =
 
 view : Model -> Html Msg
 view model =
-    div [ id "main" ]
-        [ header
-            []
-            [ h1 [] [ text "Toki Pona" ]
-            ]
-        , p [ id "haha" ]
-            [ text "Traduisez "
-            , span [ id "to-translate" ] [ text model.word ]
-            , text " en toki pona"
-            ]
-        , form
-            [ onSubmit Check ]
-            [ input
-                [ type_ "text"
-                , placeholder "toki pona"
-                , onInput TokiPonaChanged
-                , value model.actual
-                , autofocus True
-                ]
+    div [ id "under" ]
+        [ div [ id "main" ]
+            [ header
                 []
-            , button
-                [ type_ "submit" ]
-                [ text "Vérifier" ]
+                [ h1 [] [ text "Toki Pona" ]
+                ]
+            , p [ id "haha" ]
+                [ text "Traduisez "
+                , span [ id "to-translate" ] [ text model.word ]
+                , text " en toki pona"
+                ]
+            , form
+                [ onSubmit Check ]
+                [ input
+                    [ type_ "text"
+                    , placeholder "toki pona"
+                    , onInput TokiPonaChanged
+                    , value model.actual
+                    , autofocus True
+                    ]
+                    []
+                , button
+                    [ type_ "submit" ]
+                    [ text "Vérifier" ]
+                ]
+            , p [] [ text <| message model ]
             ]
-        , p [] [ text <| message model ]
         ]
 
 
@@ -148,12 +150,15 @@ message model =
         _ ->
             model.previousActual ++ " -> Oups. " ++ capitalize model.previousWord ++ " se dit " ++ model.previousExpected
 
+
 capitalize : String -> String
 capitalize word =
     String.uncons word
-    |> Maybe.map (Tuple.mapFirst Char.toUpper)
-    |> Maybe.map (\(h, t) -> String.cons h t)
-    |> Maybe.withDefault word
+        |> Maybe.map (Tuple.mapFirst Char.toUpper)
+        |> Maybe.map (\( h, t ) -> String.cons h t)
+        |> Maybe.withDefault word
+
+
 
 -- SUBSCRIPTIONS
 

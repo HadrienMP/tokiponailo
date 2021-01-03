@@ -1,10 +1,24 @@
 body {
-    background: #f12711; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #f5af19, #f12711); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    /*background: #f12711; !* fallback for old browsers *!*/
+    /*background: -webkit-linear-gradient(to right, #f5af19, #f12711); !* Chrome 10-25, Safari 5.1-6 *!*/
+    /*background: linear-gradient(to right, #f5af19, #f12711); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+    background:
+            repeating-radial-gradient(circle at bottom left, #fedc00, #fcb712, #f7921e, #e87f24, #dd6227, #dc4c27, #ca3435, #b82841, #953751, #364c88, #16599d, #02609e, #0073a9, #008aa4, #239a87, #7cba6d, #becc2f, #e0d81d),
+            repeating-radial-gradient(circle at bottom right, #fedc00, #fcb712, #f7921e, #e87f24, #dd6227, #dc4c27, #ca3435, #b82841, #953751, #364c88, #16599d, #02609e, #0073a9, #008aa4, #239a87, #7cba6d, #becc2f, #e0d81d);
+    background-blend-mode: overlay;
+    height: 100vh;
     color: white;
     font-family: 'Fira Code', monospace;
     text-align: justify;
+}
+
+#under {
+    background: url("pattern.png");
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
 }
 
 body * {
