@@ -1,0 +1,76 @@
+body {
+    background: #f12711; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #f5af19, #f12711); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    color: white;
+    font-family: 'Fira Code', monospace;
+    text-align: justify;
+}
+
+body * {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+#main {
+    width: 250px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 2.89em;
+    margin: 0;
+}
+
+h2 {
+    margin: -13px 0 0;
+    position: relative;
+    left: 2px;
+    font-size: 1.16em;
+    font-weight: normal;
+}
+
+#haha {
+    text-align: justify;
+}
+
+#to-translate {
+    font-weight: bold;
+    font-size: 1.2em;
+    letter-spacing: 1px;
+}
+
+header, form {
+    margin: 30px 0;
+}
+
+input, button {
+    border-radius: 0;
+    color: white;
+    background: none;
+    border: none;
+    border-bottom: 2px solid;
+}
+
+input:focus, button:focus {
+    outline: none;
+}
+
+input {
+    width: 70%;
+    vertical-align: bottom;
+    font-size: 1.5em;
+    padding: 0 0 0 5px;
+}
+
+input::placeholder {
+    color: #ddd;
+}
+
+button {
+    width: 30%;
+    padding: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: right;
+}
