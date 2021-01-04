@@ -143,7 +143,7 @@ view model =
                 []
                 [ img [src "logo.png"] []
                 , h1 [] [ text "Toki Pona" ]
-                , h2 [] [ text "12 days, vocabulary"]
+                , h2 [] [ text "12 jours, vocab"]
                 ]
             , p [ id "haha" ]
                 [ text "Traduisez "
@@ -167,9 +167,9 @@ view model =
             , p [] [ text <| message model ]
             , form
                 []
-                [ label [ for "day" ] [ text "Day" ]
+                [ label [ for "day" ] [ text "Jour" ]
                 , select
-                    [ id "day", placeholder "Day", onInput (\dayStr -> Day.fromString dayStr |> SelectDay) ]
+                    [ id "day", placeholder "Jour", onInput (\dayStr -> Day.fromString dayStr |> SelectDay) ]
                     (List.map dayOption Day.all)
                 ]
             ]
