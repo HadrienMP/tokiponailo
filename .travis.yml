@@ -1,1 +1,2 @@
 language: elm
+script: echo "Nothing to do"
