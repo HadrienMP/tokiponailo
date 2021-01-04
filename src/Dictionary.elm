@@ -21,6 +21,7 @@ all : List ( Day, List Word )
 all =
     [ ( One, day1 )
     , ( Two, day2 )
+    , ( Three, day3 )
     ]
 
 
@@ -85,5 +86,36 @@ day2 =
       }
     , { tokiPona = "pakala"
       , meanings = [ ( French, [ "erreur" ] ), ( English, [ "mistake" ] ) ]
+      }
+    ]
+
+
+day3 =
+    [ { tokiPona = "esun"
+      , meanings = [ ( French, [ "boutique", "acheter" ] ), ( English, [ "shop", "buy" ] ) ]
+      }
+    , { tokiPona = "lukin"
+      , meanings = [ ( French, [ "oeil", "voir" ] ), ( English, [ "eye", "see" ] ) ]
+      }
+    , { tokiPona = "jo"
+      , meanings = [ ( French, [ "avoir" ] ), ( English, [ "have" ] ) ]
+      }
+    , { tokiPona = "pana"
+      , meanings = [ ( French, [ "donner" ] ), ( English, [ "give" ] ) ]
+      }
+    , { tokiPona = "pali"
+      , meanings = [ ( French, [ "faire", "travailler", "fabriquer" ] ), ( English, [ "do", "work", "make" ] ) ]
+      }
+    , { tokiPona = "wile"
+      , meanings = [ ( French, [ "vouloir", "nécessiter" ] ), ( English, [ "want", "need" ] ) ]
+      }
+    , { tokiPona = "kute"
+      , meanings = [ ( French, [ "oreille", "entendre" ] ), ( English, [ "ear", "listen" ] ) ]
+      }
+    , { tokiPona = "kalama"
+      , meanings = [ ( French, [ "son" ] ), ( English, [ "sound" ] ) ]
+      }
+    , { tokiPona = "nasa"
+      , meanings = [ ( French, [ "étrange" ] ), ( English, [ "strange" ] ) ]
       }
     ]

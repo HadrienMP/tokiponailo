@@ -5679,6 +5679,7 @@ var $author$project$Main$pickMeaning = function (_v0) {
 		return $elm$random$Random$constant($elm$core$Maybe$Nothing);
 	}
 };
+var $author$project$Day$Three = {$: 'Three'};
 var $author$project$Day$Two = {$: 'Two'};
 var $author$project$Dictionary$English = {$: 'English'};
 var $author$project$Dictionary$day1 = _List_fromArray(
@@ -5953,10 +5954,140 @@ var $author$project$Dictionary$day2 = _List_fromArray(
 		tokiPona: 'pakala'
 	}
 	]);
+var $author$project$Dictionary$day3 = _List_fromArray(
+	[
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['boutique', 'acheter'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['shop', 'buy']))
+			]),
+		tokiPona: 'esun'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['oeil', 'voir'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['eye', 'see']))
+			]),
+		tokiPona: 'lukin'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['avoir'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['have']))
+			]),
+		tokiPona: 'jo'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['donner'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['give']))
+			]),
+		tokiPona: 'pana'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['faire', 'travailler', 'fabriquer'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['do', 'work', 'make']))
+			]),
+		tokiPona: 'pali'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['vouloir', 'nécessiter'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['want', 'need']))
+			]),
+		tokiPona: 'wile'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['oreille', 'entendre'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['ear', 'listen']))
+			]),
+		tokiPona: 'kute'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['son'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['sound']))
+			]),
+		tokiPona: 'kalama'
+	},
+		{
+		meanings: _List_fromArray(
+			[
+				_Utils_Tuple2(
+				$author$project$Dictionary$French,
+				_List_fromArray(
+					['étrange'])),
+				_Utils_Tuple2(
+				$author$project$Dictionary$English,
+				_List_fromArray(
+					['strange']))
+			]),
+		tokiPona: 'nasa'
+	}
+	]);
 var $author$project$Dictionary$all = _List_fromArray(
 	[
 		_Utils_Tuple2($author$project$Day$One, $author$project$Dictionary$day1),
-		_Utils_Tuple2($author$project$Day$Two, $author$project$Dictionary$day2)
+		_Utils_Tuple2($author$project$Day$Two, $author$project$Dictionary$day2),
+		_Utils_Tuple2($author$project$Day$Three, $author$project$Dictionary$day3)
 	]);
 var $author$project$Main$pickWordFromDay = function (day) {
 	return $elm_community$random_extra$Random$List$choose(
@@ -6028,17 +6159,27 @@ var $elm$random$Random$weighted = F2(
 			A2($elm$random$Random$getByWeight, first, others),
 			A2($elm$random$Random$float, 0, total));
 	});
-var $author$project$Main$randomizeDay = function (day) {
-	if (day.$ === 'One') {
-		return $elm$random$Random$constant($author$project$Day$One);
-	} else {
-		return A2(
-			$elm$random$Random$weighted,
-			_Utils_Tuple2(80, $author$project$Day$Two),
-			_List_fromArray(
-				[
-					_Utils_Tuple2(20, $author$project$Day$One)
-				]));
+var $author$project$Day$randomize = function (day) {
+	switch (day.$) {
+		case 'One':
+			return $elm$random$Random$constant($author$project$Day$One);
+		case 'Two':
+			return A2(
+				$elm$random$Random$weighted,
+				_Utils_Tuple2(80, $author$project$Day$Two),
+				_List_fromArray(
+					[
+						_Utils_Tuple2(20, $author$project$Day$One)
+					]));
+		default:
+			return A2(
+				$elm$random$Random$weighted,
+				_Utils_Tuple2(70, $author$project$Day$Three),
+				_List_fromArray(
+					[
+						_Utils_Tuple2(20, $author$project$Day$Two),
+						_Utils_Tuple2(10, $author$project$Day$One)
+					]));
 	}
 };
 var $author$project$Main$pickWord = function (day) {
@@ -6051,7 +6192,7 @@ var $author$project$Main$pickWord = function (day) {
 			A2(
 				$elm$random$Random$andThen,
 				$author$project$Main$pickWordFromDay,
-				$author$project$Main$randomizeDay(day))));
+				$author$project$Day$randomize(day))));
 };
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
@@ -6125,6 +6266,8 @@ var $author$project$Main$SelectDay = function (a) {
 var $author$project$Main$TokiPonaChanged = function (a) {
 	return {$: 'TokiPonaChanged', a: a};
 };
+var $author$project$Day$all = _List_fromArray(
+	[$author$project$Day$One, $author$project$Day$Two, $author$project$Day$Three]);
 var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
@@ -6171,6 +6314,8 @@ var $author$project$Day$fromString = function (string) {
 			return $elm$core$Maybe$Just($author$project$Day$One);
 		case 'Two':
 			return $elm$core$Maybe$Just($author$project$Day$Two);
+		case 'Three':
+			return $elm$core$Maybe$Just($author$project$Day$Three);
 		default:
 			return $elm$core$Maybe$Nothing;
 	}
@@ -6403,11 +6548,7 @@ var $author$project$Main$view = function (model) {
 												$author$project$Day$fromString(dayStr));
 										})
 									]),
-								A2(
-									$elm$core$List$map,
-									$author$project$Main$dayOption,
-									_List_fromArray(
-										[$author$project$Day$One, $author$project$Day$Two])))
+								A2($elm$core$List$map, $author$project$Main$dayOption, $author$project$Day$all))
 							]))
 					]))
 			]));

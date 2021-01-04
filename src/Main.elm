@@ -95,20 +95,10 @@ update msg model =
 
 
 pickWord day =
-    randomizeDay day
+    Day.randomize day
         |> Random.andThen pickWordFromDay
         |> Random.andThen pickMeaning
         |> Random.generate SelectedQuestion
-
-
-randomizeDay : Day -> Random.Generator Day
-randomizeDay day =
-    case day of
-        One ->
-            Random.constant One
-
-        Two ->
-            Random.weighted ( 80, Two ) [ ( 20, One ) ]
 
 
 pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
@@ -179,7 +169,7 @@ view model =
                 [ label [ for "day" ] [ text "Day" ]
                 , select
                     [ id "day", placeholder "Day", onInput (\dayStr -> Day.fromString dayStr |> SelectDay) ]
-                    (List.map dayOption [ One, Two ])
+                    (List.map dayOption Day.all)
                 ]
             ]
         ]
