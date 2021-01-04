@@ -6324,6 +6324,7 @@ var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
+var $elm$html$Html$img = _VirtualDom_node('img');
 var $elm$html$Html$input = _VirtualDom_node('input');
 var $elm$html$Html$label = _VirtualDom_node('label');
 var $elm$core$String$cons = _String_cons;
@@ -6424,6 +6425,12 @@ var $elm$html$Html$p = _VirtualDom_node('p');
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
 var $elm$html$Html$select = _VirtualDom_node('select');
 var $elm$html$Html$span = _VirtualDom_node('span');
+var $elm$html$Html$Attributes$src = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'src',
+		_VirtualDom_noJavaScriptOrHtmlUri(url));
+};
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $author$project$Main$view = function (model) {
 	return A2(
@@ -6447,6 +6454,13 @@ var $author$project$Main$view = function (model) {
 						_List_Nil,
 						_List_fromArray(
 							[
+								A2(
+								$elm$html$Html$img,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$src('logo.png')
+									]),
+								_List_Nil),
 								A2(
 								$elm$html$Html$h1,
 								_List_Nil,

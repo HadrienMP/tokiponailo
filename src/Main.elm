@@ -4,8 +4,8 @@ import Browser
 import Day exposing (Day(..))
 import Debug exposing (toString)
 import Dictionary exposing (Language(..), Word)
-import Html exposing (Html, button, div, form, h1, h2, header, input, label, option, p, select, span, text)
-import Html.Attributes exposing (autofocus, for, id, placeholder, type_, value)
+import Html exposing (Html, button, div, form, h1, h2, header, img, input, label, option, p, select, span, text)
+import Html.Attributes exposing (autofocus, for, id, placeholder, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Random
 import Random.List
@@ -141,7 +141,8 @@ view model =
         [ div [ id "main" ]
             [ header
                 []
-                [ h1 [] [ text "Toki Pona" ]
+                [ img [src "logo.png"] []
+                , h1 [] [ text "Toki Pona" ]
                 , h2 [] [ text "12 days, vocabulary"]
                 ]
             , p [ id "haha" ]
