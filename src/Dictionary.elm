@@ -22,6 +22,7 @@ all =
     [ ( One, day1 )
     , ( Two, day2 )
     , ( Three, day3 )
+    , ( Four, day4 )
     ]
 
 
@@ -117,5 +118,36 @@ day3 =
       }
     , { tokiPona = "nasa"
       , meanings = [ ( French, [ "étrange" ] ), ( English, [ "strange" ] ) ]
+      }
+    ]
+
+
+day4 =
+    [ { tokiPona = "lipu"
+      , meanings = [ ( French, [ "livre", "document", "enregistrement" ] ), ( English, [ "book", "document", "record" ] ) ]
+      }
+    , { tokiPona = "kulupu"
+      , meanings = [ ( French, [ "groupe", "communauté" ] ), ( English, [ "group", "community" ] ) ]
+      }
+    , { tokiPona = "tenpo"
+      , meanings = [ ( French, [ "temps", "durée", "événement" ] ), ( English, [ "time", "duration", "event" ] ) ]
+      }
+    , { tokiPona = "jaki"
+      , meanings = [ ( French, [ "sale", "dégoutant" ] ), ( English, [ "dirty", "disgusting" ] ) ]
+      }
+    , { tokiPona = "linja"
+      , meanings = [ ( French, [ "cheveux", "corde" ] ), ( English, [ "hair", "rope" ] ) ]
+      }
+    , { tokiPona = "luka"
+      , meanings = [ ( French, [ "main", "bras" ] ), ( English, [ "hand", "arm" ] ) ]
+      }
+    , { tokiPona = "noka"
+      , meanings = [ ( French, [ "pied", "jambe" ] ), ( English, [ "foot", "leg" ] ) ]
+      }
+    , { tokiPona = "lawa"
+      , meanings = [ ( French, [ "tête", "controler" ] ), ( English, [ "head", "control" ] ) ]
+      }
+    , { tokiPona = "mama"
+      , meanings = [ ( French, [ "parent", "ancêtre", "créateur" ] ), ( English, [ "parent", "ancestor", "creator" ] ) ]
       }
     ]
