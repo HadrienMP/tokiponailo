@@ -6,6 +6,7 @@ body {
             repeating-radial-gradient(circle at bottom left, #fedc00, #fcb712, #f7921e, #e87f24, #dd6227, #dc4c27, #ca3435, #b82841, #953751, #364c88, #16599d, #02609e, #0073a9, #008aa4, #239a87, #7cba6d, #becc2f, #e0d81d),
             repeating-radial-gradient(circle at bottom right, #fedc00, #fcb712, #f7921e, #e87f24, #dd6227, #dc4c27, #ca3435, #b82841, #953751, #364c88, #16599d, #02609e, #0073a9, #008aa4, #239a87, #7cba6d, #becc2f, #e0d81d);
     background-blend-mode: overlay;
+    background-attachment: fixed;
     height: 100vh;
     color: white;
     font-family: 'Fira Code', monospace;
@@ -105,13 +106,13 @@ button {
 
 label[for="day"] {
     display: inline-block;
-    width: 20%;
+    width: 25%;
     padding-bottom: 4px;
     padding-left: 5px;
     vertical-align: bottom;
 }
 select#day {
-    width: 80%;
+    width: 75%;
     font-size: 1.3em;
 }
 option {

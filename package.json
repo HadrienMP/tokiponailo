@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "elm make src/Main.elm --output=main.js",
-    "dev": "elm-live src/Main.elm -- --output=main.js"
+    "install": "elm make src/Main.elm --output=dist/main.js && cp -r ./public/* ./dist",
+    "dev": "elm-live src/Main.elm --dir=./public -- --output=public/main.js"
   },
   "author": "",
   "license": "ISC",
