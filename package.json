@@ -4,13 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pub": "npm version minor",
+    "dev": "elm-live src/Main.elm --dir=./public -- --output=public/main.js",
     "dist": "elm make src/Main.elm --output=dist/main.js && cp -r ./public/* ./dist && zip ./dist/dist.zip ./dist/*",
-    "dev": "elm-live src/Main.elm --dir=./public -- --output=public/main.js"
+    "release": "release-it --minor --ci"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "elm-live": "^4.0.2"
+    "elm-live": "^4.0.2",
+    "release-it": "^14.2.2"
+  },
+  "release-it": {
+    "npm": {
+      "publish": false
+    },
+    "github": {
+      "release": true,
+      "assets": ["./dist/dist.zip"]
+    }
   }
 }
