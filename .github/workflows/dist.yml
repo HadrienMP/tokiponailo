@@ -6,8 +6,6 @@ name: Node.js CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -20,19 +18,16 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: jorelali/setup-elm@v2
+      - uses: actions/checkout@v2
+      
+      - name: Install Elm
+        uses: jorelali/setup-elm@v2
         with:
           elm-version: 0.19.1
-      - uses: actions/checkout@v2
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run install
-      - uses: djnicholson/release-action@v2.11
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          release-name: 'Latest rolling build'
-          asset-name: 'dist.zip'
-          file: 'dist/dist.zip'
+
+      - run: npm run dist && npm run release
