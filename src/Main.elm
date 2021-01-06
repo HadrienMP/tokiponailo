@@ -141,7 +141,8 @@ view model =
         [ div [ id "main" ]
             [ header
                 []
-                [ h1 [] [ text "Toki Pona2" ]
+                [ img [src "logo.png"] []
+                , h1 [] [ text "Toki Pona" ]
                 , h2 [] [ text "12 jours, vocab"]
                 ]
             , p [ id "haha" ]
