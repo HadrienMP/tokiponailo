@@ -24,6 +24,11 @@ jobs:
         with:
           node-version: 15.x
 
+      - name: setup git config
+        run: |
+          git config user.name "HadrienMP"
+          git config user.email "github@hadrienmp.fr"
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
