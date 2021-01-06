@@ -23,6 +23,7 @@ all =
     , ( Two, day2 )
     , ( Three, day3 )
     , ( Four, day4 )
+    , ( Five, day5 )
     ]
 
 
@@ -149,5 +150,36 @@ day4 =
       }
     , { tokiPona = "mama"
       , meanings = [ ( French, [ "parent", "ancêtre", "créateur" ] ), ( English, [ "parent", "ancestor", "creator" ] ) ]
+      }
+    ]
+
+
+day5 =
+    [ { tokiPona = "ken"
+      , meanings = [ ( French, [ "pouvoir", "possibilité", "capacité" ] )]
+      }
+    , { tokiPona = "lape"
+      , meanings = [ ( French, [ "sommeil", "repos" ] )]
+      }
+    , { tokiPona = "tomo"
+      , meanings = [ ( French, [ "structure" ] )]
+      }
+    , { tokiPona = "sona"
+      , meanings = [ ( French, [ "connaissance", "sagesse", "compétence", "science"] )]
+      }
+    , { tokiPona = "kala"
+      , meanings = [ ( French, [ "poisson", "animal aquatique" ] )]
+      }
+    , { tokiPona = "sijelo"
+      , meanings = [ ( French, [ "corps", "torse", "existence" ] )]
+      }
+    , { tokiPona = "kasi"
+      , meanings = [ ( French, [ "plante" ] )]
+      }
+    , { tokiPona = "pini"
+      , meanings = [ ( French, [ "fin", "terminé" ] )]
+      }
+    , { tokiPona = "kama"
+      , meanings = [ ( French, [ "arriver", "démarrer", "devenir", "réussir" ] )]
       }
     ]

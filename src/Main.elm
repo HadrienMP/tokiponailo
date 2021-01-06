@@ -143,7 +143,7 @@ view model =
                 []
                 [ img [src "logo.png"] []
                 , h1 [] [ text "Toki Pona" ]
-                , h2 [] [ text "12 jours, vocab"]
+                , h2 [] [ text "12 jours, vocabulaire"]
                 ]
             , p [ id "haha" ]
                 [ text "Traduisez "
