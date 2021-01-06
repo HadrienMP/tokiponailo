@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "elm-live src/Main.elm --dir=./public -- --output=public/main.js",
     "dist": "elm make src/Main.elm --output=dist/main.js && cp -r ./public/* ./dist && zip ./dist/dist.zip ./dist/*",
-    "release": "release-it --minor --ci"
+    "release": "release-it --minor --ci",
+    "cd": "npm run dist && npm run release"
   },
   "author": "",
   "license": "ISC",
