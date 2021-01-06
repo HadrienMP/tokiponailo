@@ -24,4 +24,4 @@ jobs:
         with:
           node-version: 15.x
 
-      - run: npm install && npm run cd
+      - run: npm run cd
