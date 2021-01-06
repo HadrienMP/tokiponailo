@@ -141,7 +141,7 @@ view model =
         [ div [ id "main" ]
             [ header
                 []
-                [ h1 [] [ text "Toki Pona" ]
+                [ h1 [] [ text "Toki Pona2" ]
                 , h2 [] [ text "12 jours, vocab"]
                 ]
             , p [ id "haha" ]
