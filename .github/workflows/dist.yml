@@ -28,6 +28,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          export GITHUB_TOKEN=
           npm install -g release-it
           npm run cd
