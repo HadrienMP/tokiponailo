@@ -7,6 +7,7 @@ type Day
     | Three
     | Four
     | Five
+    | Six
 
 fromString : String -> Maybe Day
 fromString string =
@@ -16,9 +17,19 @@ fromString string =
         "Three" -> Just Three
         "Four" -> Just Four
         "Five" -> Just Five
+        "Six" -> Just Six
         _ -> Nothing
 
-all = [One, Two, Three, Four, Five]
+toInt day =
+    case day of
+        One -> 1
+        Two -> 2
+        Three -> 3
+        Four -> 4
+        Five -> 5
+        Six -> 6
+
+all = [One, Two, Three, Four, Five, Six]
 
 
 randomize : Day -> Random.Generator Day
@@ -38,3 +49,6 @@ randomize day =
 
         Five ->
             Random.weighted ( 70, Five ) [ ( 15, Four ), ( 5, Three ), ( 5, Two ), (5, One) ]
+
+        Six ->
+            Random.weighted ( 70, Six ) [ ( 10, Five ), (5, Four), ( 5, Three ), ( 5, Two ), (5, One) ]

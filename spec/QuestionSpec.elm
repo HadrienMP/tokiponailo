@@ -38,6 +38,16 @@ suite =
                         Expect.equal
                             [ ( 3, aWord "mi" ), ( 5, aWord "sina" ) ]
                             weighted
+                , test "asfasf" <|
+                    \_ ->
+                        let
+                            weighted =
+                                weigh [ aWord2 "mi" Day.Four, aWord2 "sina" Day.Five ]
+                                |> answer .tokiPona "mi" "mi"
+                        in
+                        Expect.equal
+                            [ ( 3, aWord "mi" ), ( 5, aWord "sina" ) ]
+                            weighted
                 ]
             , describe "Wrong answer"
                 [ test "probability rises after a wrong answer" <|
@@ -55,10 +65,12 @@ suite =
 
 
 aWord toki =
-    aWord2 toki toki Day.One
+    aWord3 toki toki Day.Five
 
+aWord2 toki day =
+    aWord3 toki toki day
 
-aWord2 toki french day =
+aWord3 toki french day =
     { tokiPona = toki
     , meanings = [ ( French, [ french ] ) ]
     , day = day

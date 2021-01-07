@@ -1,5 +1,6 @@
 module Question exposing (..)
 
+import Day
 import Dictionary exposing (Word)
 
 
@@ -10,7 +11,7 @@ type alias WeighedWord = (Int, Word)
 
 weigh : List Word -> List WeighedWord
 weigh words =
-    List.map (\word -> ( 5, word )) words
+    List.map (\word -> ( 1 * (Day.toInt word.day), word )) words
 
 
 answer : Question -> String -> String -> List ( Int, Word ) -> List ( Int, Word )
