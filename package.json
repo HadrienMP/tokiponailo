@@ -1,14 +1,12 @@
 {
   "name": "tokiponailo",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "elm-live src/Main.elm --dir=./public -- --output=public/main.js",
     "dev_test": "elm-test --watch 'spec/**/*Spec.elm'",
-
     "test": "elm-test 'spec/**/*Spec.elm'",
-
     "dist": "elm make src/Main.elm --output=dist/main.js && cp -r ./public/* ./dist && zip ./dist/dist.zip ./dist/*",
     "release": "release-it --minor --ci",
     "cd": "npm run dist && git status && npm run release"
@@ -31,6 +29,5 @@
       ]
     }
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
