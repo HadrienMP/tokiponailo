@@ -1,5 +1,6 @@
 module QuestionSpec exposing (..)
 
+import Day
 import Dictionary exposing (Language(..), Word)
 import Expect
 import Question exposing (answer, weigh)
@@ -54,10 +55,11 @@ suite =
 
 
 aWord toki =
-    aWord2 toki toki
+    aWord2 toki toki Day.One
 
 
-aWord2 toki french =
+aWord2 toki french day =
     { tokiPona = toki
     , meanings = [ ( French, [ french ] ) ]
+    , day = day
     }

@@ -103,8 +103,8 @@ pickWord day =
 
 pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
 pickWordFromDay day =
-    ValueList.get day Dictionary.all
-        |> Maybe.withDefault []
+    Dictionary.all
+        |> List.filter (\it -> it.day == day)
         |> Random.List.choose
 
 

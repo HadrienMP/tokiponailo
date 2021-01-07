@@ -1,7 +1,8 @@
 module Dictionary exposing (..)
 
-
 import Day exposing (Day(..))
+
+
 type Language
     = French
     | English
@@ -12,21 +13,17 @@ type alias Meanings =
 
 
 type alias Word =
-    { tokiPona : String
+    { day : Day
+    , tokiPona : String
     , meanings : List ( Language, Meanings )
     }
 
 
-all : List ( Day, List Word )
-all =
-    [ ( One, day1 )
-    , ( Two, day2 )
-    , ( Three, day3 )
-    , ( Four, day4 )
-    , ( Five, day5 )
-    ]
+all : List Word
+all = day1 ++ day2 ++ day3 ++ day4 ++ day5
 
 
+day1 : List Word
 day1 =
     [ { tokiPona = "mi"
       , meanings = [ ( French, [ "je" ] ), ( English, [ "I" ] ) ]
@@ -59,6 +56,7 @@ day1 =
       , meanings = [ ( French, [ "langage", "parler", "salut" ] ), ( English, [ "language", "to speak", "hello" ] ) ]
       }
     ]
+        |> List.map (toWord Day.One)
 
 
 day2 =
@@ -90,6 +88,7 @@ day2 =
       , meanings = [ ( French, [ "erreur" ] ), ( English, [ "mistake" ] ) ]
       }
     ]
+        |> List.map (toWord Day.One)
 
 
 day3 =
@@ -121,6 +120,7 @@ day3 =
       , meanings = [ ( French, [ "étrange" ] ), ( English, [ "strange" ] ) ]
       }
     ]
+        |> List.map (toWord Day.One)
 
 
 day4 =
@@ -152,34 +152,40 @@ day4 =
       , meanings = [ ( French, [ "parent", "ancêtre", "créateur" ] ), ( English, [ "parent", "ancestor", "creator" ] ) ]
       }
     ]
+        |> List.map (toWord Day.One)
 
 
 day5 =
     [ { tokiPona = "ken"
-      , meanings = [ ( French, [ "pouvoir", "possibilité", "capacité" ] )]
+      , meanings = [ ( French, [ "pouvoir", "possibilité", "capacité" ] ) ]
       }
     , { tokiPona = "lape"
-      , meanings = [ ( French, [ "sommeil", "repos" ] )]
+      , meanings = [ ( French, [ "sommeil", "repos" ] ) ]
       }
     , { tokiPona = "tomo"
-      , meanings = [ ( French, [ "structure" ] )]
+      , meanings = [ ( French, [ "structure" ] ) ]
       }
     , { tokiPona = "sona"
-      , meanings = [ ( French, [ "connaissance", "sagesse", "compétence", "science"] )]
+      , meanings = [ ( French, [ "connaissance", "sagesse", "compétence", "science" ] ) ]
       }
     , { tokiPona = "kala"
-      , meanings = [ ( French, [ "poisson", "animal aquatique" ] )]
+      , meanings = [ ( French, [ "poisson", "animal aquatique" ] ) ]
       }
     , { tokiPona = "sijelo"
-      , meanings = [ ( French, [ "corps", "torse", "existence" ] )]
+      , meanings = [ ( French, [ "corps", "torse", "existence" ] ) ]
       }
     , { tokiPona = "kasi"
-      , meanings = [ ( French, [ "plante" ] )]
+      , meanings = [ ( French, [ "plante" ] ) ]
       }
     , { tokiPona = "pini"
-      , meanings = [ ( French, [ "fin", "terminé" ] )]
+      , meanings = [ ( French, [ "fin", "terminé" ] ) ]
       }
     , { tokiPona = "kama"
-      , meanings = [ ( French, [ "arriver", "démarrer", "devenir", "réussir" ] )]
+      , meanings = [ ( French, [ "arriver", "démarrer", "devenir", "réussir" ] ) ]
       }
     ]
+        |> List.map (toWord Day.One)
+
+
+toWord day minimal =
+    { tokiPona = minimal.tokiPona, meanings = minimal.meanings, day = day }
