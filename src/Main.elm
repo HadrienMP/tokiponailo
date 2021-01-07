@@ -103,6 +103,9 @@ pickWord day =
 
 pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
 pickWordFromDay day =
+    let
+        t = Debug.log "day" day
+    in
     Dictionary.all
         |> List.filter (\it -> it.day == day)
         |> Random.List.choose
@@ -112,13 +115,16 @@ pickMeaning : ( Maybe Word, List Word ) -> Random.Generator (Maybe ( Word, Strin
 pickMeaning ( mWord, _ ) =
     case mWord of
         Just word ->
+            let
+                t = Debug.log "word" word
+            in
             ValueList.get French word.meanings
                 |> Maybe.withDefault []
                 |> Random.List.choose
                 |> Random.map (\chosenMeaning -> duo word chosenMeaning)
 
         Nothing ->
-            Random.constant Nothing
+            Debug.log "No word for this day" Random.constant Nothing
 
 
 duo : Word -> ( Maybe String, List String ) -> Maybe ( Word, String )

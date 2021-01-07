@@ -88,7 +88,7 @@ day2 =
       , meanings = [ ( French, [ "erreur" ] ), ( English, [ "mistake" ] ) ]
       }
     ]
-        |> List.map (toWord Day.One)
+        |> List.map (toWord Day.Two)
 
 
 day3 =
@@ -120,7 +120,7 @@ day3 =
       , meanings = [ ( French, [ "étrange" ] ), ( English, [ "strange" ] ) ]
       }
     ]
-        |> List.map (toWord Day.One)
+        |> List.map (toWord Day.Three)
 
 
 day4 =
@@ -152,7 +152,7 @@ day4 =
       , meanings = [ ( French, [ "parent", "ancêtre", "créateur" ] ), ( English, [ "parent", "ancestor", "creator" ] ) ]
       }
     ]
-        |> List.map (toWord Day.One)
+        |> List.map (toWord Day.Four)
 
 
 day5 =
@@ -184,7 +184,7 @@ day5 =
       , meanings = [ ( French, [ "arriver", "démarrer", "devenir", "réussir" ] ) ]
       }
     ]
-        |> List.map (toWord Day.One)
+        |> List.map (toWord Day.Five)
 
 
 toWord day minimal =
