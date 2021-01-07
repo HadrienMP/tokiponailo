@@ -46,7 +46,7 @@ suite =
                                 |> answer .tokiPona "mi" "mi"
                         in
                         Expect.equal
-                            [ ( 3, aWord "mi" ), ( 5, aWord "sina" ) ]
+                            [ ( 3, aWord2 "mi" Day.Four ), ( 5, aWord2 "sina" Day.Five ) ]
                             weighted
                 ]
             , describe "Wrong answer"

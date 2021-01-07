@@ -7,7 +7,8 @@ import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, label, option, p, select, span, text)
 import Html.Attributes exposing (autofocus, for, id, placeholder, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
-import Random
+import Question
+import Random exposing (Generator)
 import Random.List
 import ValueList
 
@@ -94,9 +95,25 @@ update msg model =
             ( model, Cmd.none )
 
 
-pickWord day =
-    Day.randomize day
-        |> Random.andThen pickWordFromDay
+pickWord2 : Generator (Maybe Word)
+pickWord2 =
+    Dictionary.all
+        |> Question.weigh
+        |> List.map (\it -> Tuple.mapFirst toFloat it)
+        |> (\it -> ( List.head it, List.tail it ))
+        |> (\it ->
+                case it of
+                    ( Just head, Just tail ) ->
+                        Random.weighted head tail
+                            |> Random.map Just
+
+                    ( _, _ ) ->
+                        Random.constant Nothing
+           )
+
+
+pickWord _ =
+    pickWord2
         |> Random.andThen pickMeaning
         |> Random.generate SelectedQuestion
 
@@ -104,19 +121,21 @@ pickWord day =
 pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
 pickWordFromDay day =
     let
-        t = Debug.log "day" day
+        t =
+            Debug.log "day" day
     in
     Dictionary.all
         |> List.filter (\it -> it.day == day)
         |> Random.List.choose
 
 
-pickMeaning : ( Maybe Word, List Word ) -> Random.Generator (Maybe ( Word, String ))
-pickMeaning ( mWord, _ ) =
+pickMeaning : Maybe Word -> Random.Generator (Maybe ( Word, String ))
+pickMeaning mWord =
     case mWord of
         Just word ->
             let
-                t = Debug.log "word" word
+                t =
+                    Debug.log "word" word
             in
             ValueList.get French word.meanings
                 |> Maybe.withDefault []
@@ -147,9 +166,9 @@ view model =
         [ div [ id "main" ]
             [ header
                 []
-                [ img [src "logo.png"] []
+                [ img [ src "logo.png" ] []
                 , h1 [] [ text "Toki Pona" ]
-                , h2 [] [ text "12 jours, vocabulaire"]
+                , h2 [] [ text "12 jours, vocabulaire" ]
                 ]
             , p [ id "haha" ]
                 [ text "Traduisez "
