@@ -5,6 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "elm-live src/Main.elm --dir=./public -- --output=public/main.js",
+    "dev_test": "elm-test --watch 'spec/**/*Spec.elm'",
+
+    "test": "elm-test 'spec/**/*Spec.elm'",
+
     "dist": "elm make src/Main.elm --output=dist/main.js && cp -r ./public/* ./dist && zip ./dist/dist.zip ./dist/*",
     "release": "release-it --minor --ci",
     "cd": "npm run dist && git status && npm run release"
@@ -13,6 +17,7 @@
   "license": "ISC",
   "devDependencies": {
     "elm-live": "^4.0.2",
+    "elm-test": "^0.19.1-revision4",
     "release-it": "^14.2.2"
   },
   "release-it": {
@@ -25,5 +30,7 @@
         "./dist/dist.zip"
       ]
     }
+  },
+  "dependencies": {
   }
 }
