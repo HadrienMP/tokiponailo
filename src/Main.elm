@@ -7,7 +7,7 @@ import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, label, option, p, select, span, text)
 import Html.Attributes exposing (autofocus, for, id, placeholder, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
-import Question
+import Question exposing (WeighedWord)
 import Random exposing (Generator)
 import Random.List
 import ValueList
@@ -39,21 +39,29 @@ type alias Model =
     , previousActual : String
     , previousExpected : String
     , right : Maybe Bool
+    , words : List WeighedWord
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { day = One
-      , word = "big"
-      , expected = "suli"
-      , actual = ""
-      , previousWord = ""
-      , previousActual = ""
-      , previousExpected = ""
-      , right = Nothing
-      }
-    , pickWord One
+    let
+        model =
+            { day = One
+            , word = "big"
+            , expected = "suli"
+            , actual = ""
+            , previousWord = ""
+            , previousActual = ""
+            , previousExpected = ""
+            , right = Nothing
+            , words =
+                Dictionary.all
+                    |> Question.weigh
+            }
+    in
+    ( model
+    , pickWord model.words
     )
 
 
@@ -81,12 +89,13 @@ update msg model =
                 , previousActual = model.actual
                 , previousExpected = model.expected
                 , previousWord = model.word
+                , words = Question.answer (.tokiPona) model.expected model.actual model.words
               }
-            , pickWord model.day
+            , pickWord model.words
             )
 
         SelectDay (Just day) ->
-            ( { model | day = day }, pickWord day )
+            ( { model | day = day }, pickWord model.words )
 
         SelectedQuestion (Just ( word, meaning )) ->
             ( { model | word = meaning, expected = word.tokiPona }, Cmd.none )
@@ -95,10 +104,9 @@ update msg model =
             ( model, Cmd.none )
 
 
-pickWord2 : Generator (Maybe Word)
-pickWord2 =
-    Dictionary.all
-        |> Question.weigh
+pickWord2 : List WeighedWord -> Generator (Maybe Word)
+pickWord2 words =
+    words
         |> List.map (\it -> Tuple.mapFirst toFloat it)
         |> (\it -> ( List.head it, List.tail it ))
         |> (\it ->
@@ -112,8 +120,8 @@ pickWord2 =
            )
 
 
-pickWord _ =
-    pickWord2
+pickWord words =
+    pickWord2 words
         |> Random.andThen pickMeaning
         |> Random.generate SelectedQuestion
 
