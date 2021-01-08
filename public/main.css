@@ -34,10 +34,17 @@ body * {
     margin: auto;
 }
 
+#under header {
+    margin: 0 0 40px;
+    box-shadow: 0 2px 10px #111;
+    background: url("pattern.png") #00a49b;
+    padding: 4px 10px 10px;
+}
+
 header img {
-    width: 100px;
-    margin: auto;
-    display: block;
+    width: 40px;
+    margin: 13px 20px 10px 14px;
+    float: left;
 }
 
 h1 {
@@ -54,7 +61,11 @@ h2 {
     letter-spacing: 0.7px;
 }
 
-#haha {
+#message {
+    cursor: pointer;
+}
+
+#toTranslate {
     text-align: justify;
 }
 

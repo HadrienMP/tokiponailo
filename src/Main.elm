@@ -5,8 +5,8 @@ import Day exposing (Day(..))
 import Debug exposing (toString)
 import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, label, option, p, select, span, text)
-import Html.Attributes exposing (autofocus, for, id, placeholder, src, type_, value)
-import Html.Events exposing (onInput, onSubmit)
+import Html.Attributes exposing (autofocus, classList, for, id, placeholder, src, type_, value)
+import Html.Events exposing (onClick, onInput, onSubmit)
 import Question exposing (WeighedWord)
 import Random exposing (Generator)
 import Random.List
@@ -74,6 +74,7 @@ type Msg
     | TokiPonaChanged String
     | SelectedQuestion (Maybe ( Word, String ))
     | SelectDay (Maybe Day)
+    | NextQuestion
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -89,7 +90,7 @@ update msg model =
                 , previousActual = model.actual
                 , previousExpected = model.expected
                 , previousWord = model.word
-                , words = Question.answer (.tokiPona) model.expected model.actual model.words
+                , words = Question.answer .tokiPona model.expected model.actual model.words
               }
             , pickWord model.words
             )
@@ -99,6 +100,9 @@ update msg model =
 
         SelectedQuestion (Just ( word, meaning )) ->
             ( { model | word = meaning, expected = word.tokiPona }, Cmd.none )
+
+        NextQuestion ->
+            ( {model | right = Nothing }, Cmd.none)
 
         _ ->
             ( model, Cmd.none )
@@ -171,41 +175,44 @@ duo word ( mMeaning, _ ) =
 view : Model -> Html Msg
 view model =
     div [ id "under" ]
-        [ div [ id "main" ]
-            [ header
-                []
-                [ img [ src "logo.png" ] []
-                , h1 [] [ text "Toki Pona" ]
-                , h2 [] [ text "12 jours, vocabulaire" ]
-                ]
-            , p [ id "haha" ]
-                [ text "Traduisez "
-                , span [ id "to-translate" ] [ text model.word ]
-                , text " en toki pona"
-                ]
-            , form
-                [ onSubmit Check ]
-                [ input
-                    [ type_ "text"
-                    , placeholder "toki pona"
-                    , onInput TokiPonaChanged
-                    , value model.actual
-                    , autofocus True
-                    ]
-                    []
-                , button
-                    [ type_ "submit" ]
-                    [ text "Vérifier" ]
-                ]
-            , p [] [ text <| message model ]
-            , form
-                []
-                [ label [ for "day" ] [ text "Jour" ]
-                , select
-                    [ id "day", placeholder "Jour", onInput (\dayStr -> Day.fromString dayStr |> SelectDay) ]
-                    (List.map dayOption Day.all)
-                ]
+        [ header
+            []
+            [ img [ src "logo.png" ] []
+            , h1 [] [ text "Toki Pona" ]
+            , h2 [] [ text "12 jours, vocabulaire" ]
             ]
+        , div [ id "main" ] (mainHtml model)
+        ]
+
+mainHtml : Model -> List (Html Msg)
+mainHtml model =
+    if model.right /= Just False then
+        [ p [ id "toTranslate" ]
+            [ text "Traduisez "
+            , span [ id "to-translate" ] [ text model.word ]
+            ]
+        , form
+            [ onSubmit Check ]
+            [ input
+                [ type_ "text"
+                , placeholder "toki pona"
+                , onInput TokiPonaChanged
+                , value model.actual
+                , autofocus True
+                ]
+                []
+            , button
+                [ type_ "submit" ]
+                [ text "Vérifier" ]
+            ]
+        ]
+    else
+        [ p
+            [ id "message"
+            , classList [("empty", model.right == Nothing)]
+            , onClick NextQuestion
+            ]
+            [ text <| message model ]
         ]
 
 
