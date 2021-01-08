@@ -1,11 +1,10 @@
 module Main exposing (..)
 
 import Browser
-import Day exposing (Day(..))
-import Debug exposing (toString)
+import Day exposing (Day(..), toString)
 import Dictionary exposing (Language(..), Word)
-import Html exposing (Html, button, div, form, h1, h2, header, img, input, label, option, p, select, span, text)
-import Html.Attributes exposing (autofocus, classList, for, id, placeholder, src, type_, value)
+import Html exposing (Html, button, div, form, h1, h2, header, img, input, option, p, span, text)
+import Html.Attributes exposing (autofocus, classList, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Question exposing (WeighedWord)
 import Random exposing (Generator)
@@ -132,10 +131,6 @@ pickWord words =
 
 pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
 pickWordFromDay day =
-    let
-        t =
-            Debug.log "day" day
-    in
     Dictionary.all
         |> List.filter (\it -> it.day == day)
         |> Random.List.choose
@@ -145,17 +140,13 @@ pickMeaning : Maybe Word -> Random.Generator (Maybe ( Word, String ))
 pickMeaning mWord =
     case mWord of
         Just word ->
-            let
-                t =
-                    Debug.log "word" word
-            in
             ValueList.get French word.meanings
                 |> Maybe.withDefault []
                 |> Random.List.choose
                 |> Random.map (\chosenMeaning -> duo word chosenMeaning)
 
         Nothing ->
-            Debug.log "No word for this day" Random.constant Nothing
+            Random.constant Nothing
 
 
 duo : Word -> ( Maybe String, List String ) -> Maybe ( Word, String )
