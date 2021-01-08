@@ -20,7 +20,7 @@ type alias Word =
 
 
 all : List Word
-all = day1 ++ day2 ++ day3 ++ day4 ++ day5 ++ day6
+all = day1 ++ day2 ++ day3 ++ day4 ++ day5 ++ day6 ++ day7
 
 
 day1 : List Word
@@ -213,7 +213,33 @@ day6 =
       , meanings = [ ( French, [ "amour" ] ) ]
       }
     ]
-        |> List.map (toWord Day.Five)
+        |> List.map (toWord Day.Six)
+
+
+day7 =
+    [ { tokiPona = "seme"
+      , meanings = [ ( French, [ "quoi", "quel", "inconnu de moi" ] ) ]
+      }
+    , { tokiPona = "anu"
+      , meanings = [ ( French, [ "ou" ] ) ]
+      }
+    , { tokiPona = "alasa"
+      , meanings = [ ( French, [ "chasser", "cueillir" ] ) ]
+      }
+    , { tokiPona = "mani"
+      , meanings = [ ( French, [ "argent" ] ) ]
+      }
+    , { tokiPona = "lupa"
+      , meanings = [ ( French, [ "trou", "porte" ] ) ]
+      }
+    , { tokiPona = "moli"
+      , meanings = [ ( French, [ "tuer", "mort" ] ) ]
+      }
+    , { tokiPona = "mun"
+      , meanings = [ ( French, [ "lune" ] ) ]
+      }
+    ]
+        |> List.map (toWord Day.Seven)
 
 
 toWord day minimal =
