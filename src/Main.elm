@@ -101,7 +101,7 @@ update msg model =
             ( { model | word = meaning, expected = word.tokiPona }, Cmd.none )
 
         NextQuestion ->
-            ( {model | right = Nothing }, Cmd.none)
+            ( { model | right = Nothing }, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
@@ -169,11 +169,14 @@ view model =
         [ header
             []
             [ img [ src "logo.png" ] []
-            , h1 [] [ text "Toki Pona" ]
-            , h2 [] [ text "12 jours, vocabulaire" ]
+            , div [ id "title" ]
+                [ h1 [] [ text "Toki Pona" ]
+                , h2 [] [ text "12 jours, vocabulaire" ]
+                ]
             ]
         , div [ id "main" ] (mainHtml model)
         ]
+
 
 mainHtml : Model -> List (Html Msg)
 mainHtml model =
@@ -197,10 +200,11 @@ mainHtml model =
                 [ text "Vérifier" ]
             ]
         ]
+
     else
         [ p
             [ id "message"
-            , classList [("empty", model.right == Nothing)]
+            , classList [ ( "empty", model.right == Nothing ) ]
             , onClick NextQuestion
             ]
             [ text <| message model ]
