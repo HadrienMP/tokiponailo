@@ -168,7 +168,7 @@ view model =
     div [ id "under" ]
         [ header
             []
-            [ img [ src "logo.png" ] []
+            [ img [ src "logo2.png" ] []
             , div [ id "title" ]
                 [ h1 [] [ text "Toki Pona" ]
                 , h2 [] [ text "12 jours, vocabulaire" ]
@@ -202,12 +202,19 @@ mainHtml model =
         ]
 
     else
-        [ p
+        [ div
             [ id "message"
             , classList [ ( "empty", model.right == Nothing ) ]
             , onClick NextQuestion
             ]
-            [ text <| message model ]
+            [ p [ id "toTranslate" ]
+                [ text "Traduisez "
+                , span [ id "to-translate" ] [ text model.previousWord ]
+                ]
+            , p [id "wrong"] [ text <| model.previousActual ]
+            , p [id "right"] [ text <| model.previousExpected ]
+            , button [] [ text "Question suivante" ]
+            ]
         ]
 
 
