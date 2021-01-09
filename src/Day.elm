@@ -11,53 +11,50 @@ type Day
     | Five
     | Six
     | Seven
+    | Eight
 
 
+type alias DayMap =
+    { day : Day
+    , label : String
+    , value : Int
+    }
+
+
+dayLabels : List DayMap
 dayLabels =
-    [ ( One, "One" )
-    , ( Two, "Two" )
-    , ( Three, "Three" )
-    , ( Four, "Four" )
-    , ( Five, "Five" )
-    , ( Six, "Six" )
-    , ( Seven, "Seven" )
+    [ DayMap One "One" 1
+    , DayMap Two "Two" 2
+    , DayMap Three "Three" 3
+    , DayMap Four "Four" 4
+    , DayMap Five "Five" 5
+    , DayMap Six "Six" 6
+    , DayMap Seven "Seven" 7
+    , DayMap Eight "Eight" 8
     ]
 
 
 toString : Day -> String
 toString day =
-    List.filter (\( value, _ ) -> value == day) dayLabels
+    dayLabels
+        |> List.filter (\it -> it.day == day)
         |> List.head
-        |> Maybe.map Tuple.second
+        |> Maybe.map .label
         |> Maybe.withDefault ""
 
 
 fromString : String -> Maybe Day
 fromString string =
-    List.filter (\( _, name ) -> name == string) dayLabels
+    dayLabels
+        |> List.filter (\it -> it.label == string)
         |> List.head
-        |> Maybe.map Tuple.first
+        |> Maybe.map .day
 
 
+toInt : Day -> Int
 toInt day =
-    case day of
-        One ->
-            1
-
-        Two ->
-            2
-
-        Three ->
-            3
-
-        Four ->
-            4
-
-        Five ->
-            5
-
-        Six ->
-            6
-
-        Seven ->
-            7
+    dayLabels
+        |> List.filter (\it -> it.day == day)
+        |> List.head
+        |> Maybe.map .value
+        |> Maybe.withDefault 0
