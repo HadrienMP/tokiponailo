@@ -8,7 +8,7 @@ import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Question exposing (Question)
 import Random exposing (Generator)
-import WeightedWords exposing (WeighedWord)
+import WeightedWords exposing (WeightedWord)
 
 
 
@@ -32,7 +32,7 @@ type alias Model =
     { day : Day
     , question : Maybe Question
     , previousQuestion : Maybe Question
-    , words : List WeighedWord
+    , words : List WeightedWord
     }
 
 

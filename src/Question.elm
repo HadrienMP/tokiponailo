@@ -2,7 +2,6 @@ module Question exposing (..)
 
 import Dictionary exposing (Language(..), Word)
 
-
 type alias Question =
     { questionProp : Word -> String
     , answerProp : Word -> String
@@ -11,9 +10,10 @@ type alias Question =
     }
 
 
+type alias QuestionProp =
+    Word -> String
 type alias AnswerProp =
     Word -> String
-
 
 wasRight : Question -> Bool
 wasRight question =

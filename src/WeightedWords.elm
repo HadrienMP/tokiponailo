@@ -8,11 +8,11 @@ import Random.List
 import ValueList
 
 
-type alias WeighedWord =
+type alias WeightedWord =
     ( Int, Word )
 
 
-weigh : List Word -> List WeighedWord
+weigh : List Word -> List WeightedWord
 weigh words =
     List.map (\word -> ( 1 * Day.toInt word.day, word )) words
 
@@ -21,7 +21,7 @@ weigh words =
 -- PICK
 
 
-pickWord : List WeighedWord -> Random.Generator (Maybe ( Word, String ))
+pickWord : List WeightedWord -> Random.Generator (Maybe ( Word, String ))
 pickWord words =
     words
         |> List.map (\it -> Tuple.mapFirst toFloat it)
@@ -49,6 +49,13 @@ pickMeaning mWord =
 
         Nothing ->
             Random.constant Nothing
+
+pickMeaning2 : Word -> Random.Generator (Maybe String)
+pickMeaning2 word =
+    ValueList.get French word.meanings
+        |> Maybe.withDefault []
+        |> Random.List.choose
+        |> Random.map Tuple.first
 
 
 duo : Word -> ( Maybe String, List String ) -> Maybe ( Word, String )
