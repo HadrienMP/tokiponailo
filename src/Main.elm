@@ -6,8 +6,9 @@ import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, p, span, text)
 import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import Question exposing (Question, WeighedWord)
+import Question exposing (Question)
 import Random exposing (Generator)
+import WeightedWords exposing (WeighedWord)
 
 
 
@@ -44,7 +45,7 @@ init _ =
             , previousQuestion = Nothing
             , words =
                 Dictionary.all
-                    |> Question.weigh
+                    |> WeightedWords.weigh
             }
     in
     ( model
@@ -74,7 +75,7 @@ update msg model =
             ( { model
                 | question = Nothing
                 , previousQuestion = model.question
-                , words = Question.answer question model.words
+                , words = WeightedWords.update question model.words
               }
             , pickWord model.words
             )
@@ -93,7 +94,7 @@ update msg model =
 
 
 pickWord words =
-    Question.pickWord words |> Random.generate SelectedQuestion
+    WeightedWords.pickWord words |> Random.generate SelectedQuestion
 
 
 
