@@ -4,7 +4,7 @@ import Browser
 import Day exposing (Day(..))
 import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, p, span, text)
-import Html.Attributes exposing (autofocus, classList, id, placeholder, src, type_, value)
+import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
 import Question exposing (Question, WeighedWord)
 import Random exposing (Generator)
@@ -117,60 +117,63 @@ view model =
 
 mainHtml : Model -> List (Html Msg)
 mainHtml model =
-    if Maybe.map (\q -> Question.wasRight q) model.previousQuestion /= Just False then
-        [ p [ id "toTranslate" ]
-            [ text "Traduisez "
-            , span
-                [ id "to-translate" ]
-                [ model.question |> Maybe.map (\q -> q.questionProp q.word) |> Maybe.withDefault "Wut no question ?" |> text ]
-            ]
-        , form
-            [ onSubmit Check ]
-            [ input
-                [ type_ "text"
-                , placeholder "toki pona"
-                , onInput ActualChanged
-                , model.question |> Maybe.map (\q -> q.actual) |> Maybe.withDefault "" |> value
-                , autofocus True
-                ]
-                []
-            , button
-                [ type_ "submit" ]
-                [ text "Vérifier" ]
-            ]
-        ]
+    case model.previousQuestion of
+        Just previousQuestion ->
+            if Question.wasRight previousQuestion then
+                questionHtml model
 
-    else
-        [ div
-            [ id "message"
-            , classList [ ( "empty", model.previousQuestion == Nothing ) ]
-            , onClick NextQuestion
-            ]
+            else
+                errorHtml previousQuestion
+
+        Nothing ->
+            questionHtml model
+
+
+questionHtml model =
+    case model.question of
+        Just question ->
             [ p [ id "toTranslate" ]
                 [ text "Traduisez "
                 , span
                     [ id "to-translate" ]
-                    [ model.previousQuestion
-                        |> Maybe.map (\q -> q.questionProp q.word)
-                        |> Maybe.withDefault "Wut no question ?"
-                        |> text
+                    [ question |> (\q -> q.questionProp q.word) |> text ]
+                ]
+            , form
+                [ onSubmit Check ]
+                [ input
+                    [ type_ "text"
+                    , placeholder "toki pona"
+                    , onInput ActualChanged
+                    , question |> (\q -> q.actual) |> value
+                    , autofocus True
                     ]
+                    []
+                , button
+                    [ type_ "submit" ]
+                    [ text "Vérifier" ]
                 ]
-            , p [ id "wrong" ]
-                [ model.previousQuestion
-                    |> Maybe.map (\q -> q.actual)
-                    |> Maybe.withDefault "Wut no actual ?"
-                    |> text
-                ]
-            , p [ id "right" ]
-                [ model.previousQuestion
-                    |> Maybe.map (\q -> q.answerProp q.word)
-                    |> Maybe.withDefault "Wut no expected ?"
-                    |> text
-                ]
-            , button [] [ text "Question suivante" ]
             ]
+
+        Nothing ->
+            [ p [] [ text "Loading" ] ]
+
+
+errorHtml previousQuestion =
+    [ div
+        [ id "message", onClick NextQuestion ]
+        [ p [ id "toTranslate" ]
+            [ text "Traduisez "
+            , span
+                [ id "to-translate" ]
+                [ previousQuestion |> (\q -> q.questionProp q.word) |> text ]
+            ]
+        , p [ id "wrong" ]
+            [ previousQuestion |> (\q -> q.actual) |> text ]
+        , p [ id "right" ]
+            [ previousQuestion |> (\q -> q.answerProp q.word) |> text ]
+        , button [] [ text "Question suivante" ]
         ]
+    ]
 
 
 
