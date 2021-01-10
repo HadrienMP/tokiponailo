@@ -1,15 +1,13 @@
 module Main exposing (..)
 
 import Browser
-import Day exposing (Day(..), toString)
+import Day exposing (Day(..))
 import Dictionary exposing (Language(..), Word)
-import Html exposing (Html, button, div, form, h1, h2, header, img, input, option, p, span, text)
+import Html exposing (Html, button, div, form, h1, h2, header, img, input, p, span, text)
 import Html.Attributes exposing (autofocus, classList, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import Question exposing (WeighedWord)
+import Question exposing (Question, WeighedWord)
 import Random exposing (Generator)
-import Random.List
-import ValueList
 
 
 
@@ -31,13 +29,8 @@ main =
 
 type alias Model =
     { day : Day
-    , word : String
-    , expected : String
-    , actual : String
-    , previousWord : String
-    , previousActual : String
-    , previousExpected : String
-    , right : Maybe Bool
+    , question : Maybe Question
+    , previousQuestion : Maybe Question
     , words : List WeighedWord
     }
 
@@ -47,13 +40,8 @@ init _ =
     let
         model =
             { day = One
-            , word = "big"
-            , expected = "suli"
-            , actual = ""
-            , previousWord = ""
-            , previousActual = ""
-            , previousExpected = ""
-            , right = Nothing
+            , question = Nothing
+            , previousQuestion = Nothing
             , words =
                 Dictionary.all
                     |> Question.weigh
@@ -70,7 +58,7 @@ init _ =
 
 type Msg
     = Check
-    | TokiPonaChanged String
+    | ActualChanged String
     | SelectedQuestion (Maybe ( Word, String ))
     | SelectDay (Maybe Day)
     | NextQuestion
@@ -78,85 +66,34 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        TokiPonaChanged tokiPona ->
-            ( { model | actual = tokiPona }, Cmd.none )
+    case ( msg, model.question ) of
+        ( ActualChanged tokiPona, Just question ) ->
+            ( { model | question = Just <| Question.updateActual tokiPona question }, Cmd.none )
 
-        Check ->
+        ( Check, Just question ) ->
             ( { model
-                | actual = ""
-                , right = Just <| model.actual == model.expected
-                , previousActual = model.actual
-                , previousExpected = model.expected
-                , previousWord = model.word
-                , words = Question.answer .tokiPona model.expected model.actual model.words
+                | question = Nothing
+                , previousQuestion = model.question
+                , words = Question.answer question model.words
               }
             , pickWord model.words
             )
 
-        SelectDay (Just day) ->
+        ( SelectDay (Just day), _ ) ->
             ( { model | day = day }, pickWord model.words )
 
-        SelectedQuestion (Just ( word, meaning )) ->
-            ( { model | word = meaning, expected = word.tokiPona }, Cmd.none )
+        ( SelectedQuestion (Just ( word, meaning )), _ ) ->
+            ( { model | question = Just <| Question (\_ -> meaning) .tokiPona word "" }, Cmd.none )
 
-        NextQuestion ->
-            ( { model | right = Nothing }, Cmd.none )
+        ( NextQuestion, _ ) ->
+            ( { model | previousQuestion = Nothing }, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
 
 
-pickWord2 : List WeighedWord -> Generator (Maybe Word)
-pickWord2 words =
-    words
-        |> List.map (\it -> Tuple.mapFirst toFloat it)
-        |> (\it -> ( List.head it, List.tail it ))
-        |> (\it ->
-                case it of
-                    ( Just head, Just tail ) ->
-                        Random.weighted head tail
-                            |> Random.map Just
-
-                    ( _, _ ) ->
-                        Random.constant Nothing
-           )
-
-
 pickWord words =
-    pickWord2 words
-        |> Random.andThen pickMeaning
-        |> Random.generate SelectedQuestion
-
-
-pickWordFromDay : Day -> Random.Generator ( Maybe Word, List Word )
-pickWordFromDay day =
-    Dictionary.all
-        |> List.filter (\it -> it.day == day)
-        |> Random.List.choose
-
-
-pickMeaning : Maybe Word -> Random.Generator (Maybe ( Word, String ))
-pickMeaning mWord =
-    case mWord of
-        Just word ->
-            ValueList.get French word.meanings
-                |> Maybe.withDefault []
-                |> Random.List.choose
-                |> Random.map (\chosenMeaning -> duo word chosenMeaning)
-
-        Nothing ->
-            Random.constant Nothing
-
-
-duo : Word -> ( Maybe String, List String ) -> Maybe ( Word, String )
-duo word ( mMeaning, _ ) =
-    case mMeaning of
-        Just meaning ->
-            Just ( word, meaning )
-
-        Nothing ->
-            Nothing
+    Question.pickWord words |> Random.generate SelectedQuestion
 
 
 
@@ -180,18 +117,20 @@ view model =
 
 mainHtml : Model -> List (Html Msg)
 mainHtml model =
-    if model.right /= Just False then
+    if Maybe.map (\q -> Question.wasRight q) model.previousQuestion /= Just False then
         [ p [ id "toTranslate" ]
             [ text "Traduisez "
-            , span [ id "to-translate" ] [ text model.word ]
+            , span
+                [ id "to-translate" ]
+                [ model.question |> Maybe.map (\q -> q.questionProp q.word) |> Maybe.withDefault "Wut no question ?" |> text ]
             ]
         , form
             [ onSubmit Check ]
             [ input
                 [ type_ "text"
                 , placeholder "toki pona"
-                , onInput TokiPonaChanged
-                , value model.actual
+                , onInput ActualChanged
+                , model.question |> Maybe.map (\q -> q.actual) |> Maybe.withDefault "" |> value
                 , autofocus True
                 ]
                 []
@@ -204,44 +143,34 @@ mainHtml model =
     else
         [ div
             [ id "message"
-            , classList [ ( "empty", model.right == Nothing ) ]
+            , classList [ ( "empty", model.previousQuestion == Nothing ) ]
             , onClick NextQuestion
             ]
             [ p [ id "toTranslate" ]
                 [ text "Traduisez "
-                , span [ id "to-translate" ] [ text model.previousWord ]
+                , span
+                    [ id "to-translate" ]
+                    [ model.previousQuestion
+                        |> Maybe.map (\q -> q.questionProp q.word)
+                        |> Maybe.withDefault "Wut no question ?"
+                        |> text
+                    ]
                 ]
-            , p [id "wrong"] [ text <| model.previousActual ]
-            , p [id "right"] [ text <| model.previousExpected ]
+            , p [ id "wrong" ]
+                [ model.previousQuestion
+                    |> Maybe.map (\q -> q.actual)
+                    |> Maybe.withDefault "Wut no actual ?"
+                    |> text
+                ]
+            , p [ id "right" ]
+                [ model.previousQuestion
+                    |> Maybe.map (\q -> q.answerProp q.word)
+                    |> Maybe.withDefault "Wut no expected ?"
+                    |> text
+                ]
             , button [] [ text "Question suivante" ]
             ]
         ]
-
-
-dayOption : Day -> Html Msg
-dayOption day =
-    option [ value <| toString day ] [ text <| toString day ]
-
-
-message : Model -> String
-message model =
-    case model.right of
-        Nothing ->
-            ""
-
-        Just True ->
-            "Exact !"
-
-        _ ->
-            model.previousActual ++ " -> Oups. " ++ capitalize model.previousWord ++ " se dit " ++ model.previousExpected
-
-
-capitalize : String -> String
-capitalize word =
-    String.uncons word
-        |> Maybe.map (Tuple.mapFirst Char.toUpper)
-        |> Maybe.map (\( h, t ) -> String.cons h t)
-        |> Maybe.withDefault word
 
 
 
