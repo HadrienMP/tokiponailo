@@ -47,8 +47,20 @@ isRight answer question =
             answer == question.word.tokiPona
         FromTokiPona ->
             String.split "," answer
+            |> List.map String.trim
             |> List.map (\answerWord -> hasMeaning answerWord question.word)
             |> List.foldr (&&) True
+
+expected: Question -> String
+expected question =
+    case question.type_ of
+        TokTokiPona ->
+            question.word.tokiPona
+        FromTokiPona ->
+            question.word.meanings
+            |> ValueList.get French
+            |> Maybe.withDefault []
+            |> List.foldr (\a b -> a ++ ", " ++ b) ""
 
 hasMeaning: String -> Word -> Bool
 hasMeaning meaning word =

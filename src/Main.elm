@@ -6,7 +6,7 @@ import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, p, span, text)
 import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import Question exposing (Question)
+import Question2
 import Random exposing (Generator)
 import WeightedWords exposing (WeightedWord)
 
@@ -30,8 +30,10 @@ main =
 
 type alias Model =
     { day : Day
-    , question : Maybe Question
-    , previousQuestion : Maybe Question
+    , question : Maybe Question2.Question
+    , previousQuestion : Maybe Question2.Question
+    , actual: String
+    , previousActual: String
     , words : List WeightedWord
     }
 
@@ -43,13 +45,15 @@ init _ =
             { day = One
             , question = Nothing
             , previousQuestion = Nothing
+            , actual = ""
+            , previousActual = ""
             , words =
                 Dictionary.all
                     |> WeightedWords.weigh
             }
     in
     ( model
-    , pickWord model.words
+    , pickQuestion model.words
     )
 
 
@@ -60,7 +64,7 @@ init _ =
 type Msg
     = Check
     | ActualChanged String
-    | SelectedQuestion (Maybe ( Word, String ))
+    | SelectedQuestion (Maybe Question2.Question)
     | SelectDay (Maybe Day)
     | NextQuestion
 
@@ -68,23 +72,29 @@ type Msg
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( msg, model.question ) of
-        ( ActualChanged tokiPona, Just question ) ->
-            ( { model | question = Just <| Question.updateActual tokiPona question }, Cmd.none )
+        ( ActualChanged actual, _ ) ->
+            ( { model | actual = actual }, Cmd.none )
 
         ( Check, Just question ) ->
+            let
+                updater = if Question2.isRight model.actual question then (\it -> it - 1) else (+) 2
+                updatedWords = WeightedWords.update question.word updater model.words
+            in
             ( { model
                 | question = Nothing
                 , previousQuestion = model.question
-                , words = WeightedWords.update question model.words
+                , actual = ""
+                , previousActual = model.actual
+                , words = updatedWords
               }
-            , pickWord model.words
+            , pickQuestion model.words
             )
 
         ( SelectDay (Just day), _ ) ->
-            ( { model | day = day }, pickWord model.words )
+            ( { model | day = day }, pickQuestion model.words )
 
-        ( SelectedQuestion (Just ( word, meaning )), _ ) ->
-            ( { model | question = Just <| Question (\_ -> meaning) .tokiPona word "" }, Cmd.none )
+        ( SelectedQuestion question, _ ) ->
+            ( { model | question = question }, Cmd.none )
 
         ( NextQuestion, _ ) ->
             ( { model | previousQuestion = Nothing }, Cmd.none )
@@ -93,10 +103,17 @@ update msg model =
             ( model, Cmd.none )
 
 
-pickWord words =
-    WeightedWords.pickWord words |> Random.generate SelectedQuestion
+pickQuestion words =
+    WeightedWords.pickWord2 words
+    |> Random.andThen jojo
+    |> Random.generate SelectedQuestion
 
-
+jojo mWord =
+    case mWord of
+        Just word ->
+            Question2.pickQuestion word
+        Nothing ->
+            Random.constant Nothing
 
 -- VIEW
 
@@ -120,16 +137,17 @@ mainHtml : Model -> List (Html Msg)
 mainHtml model =
     case model.previousQuestion of
         Just previousQuestion ->
-            if Question.wasRight previousQuestion then
+            if Question2.isRight model.previousActual previousQuestion then
                 questionHtml model
 
             else
-                errorHtml previousQuestion
+                errorHtml model
 
         Nothing ->
             questionHtml model
 
 
+questionHtml: Model -> List (Html Msg)
 questionHtml model =
     case model.question of
         Just question ->
@@ -137,7 +155,7 @@ questionHtml model =
                 [ text "Traduisez "
                 , span
                     [ id "to-translate" ]
-                    [ question |> (\q -> q.questionProp q.word) |> text ]
+                    [ question.toTranslate |> text ]
                 ]
             , form
                 [ onSubmit Check ]
@@ -145,7 +163,7 @@ questionHtml model =
                     [ type_ "text"
                     , placeholder "toki pona"
                     , onInput ActualChanged
-                    , question |> (\q -> q.actual) |> value
+                    , model.actual |> value
                     , autofocus True
                     ]
                     []
@@ -159,19 +177,20 @@ questionHtml model =
             [ p [] [ text "Loading" ] ]
 
 
-errorHtml previousQuestion =
+errorHtml: Model -> List (Html Msg)
+errorHtml model =
     [ div
         [ id "message", onClick NextQuestion ]
         [ p [ id "toTranslate" ]
             [ text "Traduisez "
             , span
                 [ id "to-translate" ]
-                [ previousQuestion |> (\q -> q.questionProp q.word) |> text ]
+                [ model.previousQuestion |> Maybe.map .toTranslate |> Maybe.withDefault "No Question wut ???" |> text ]
             ]
         , p [ id "wrong" ]
-            [ previousQuestion |> (\q -> q.actual) |> text ]
+            [ model.previousActual |> text ]
         , p [ id "right" ]
-            [ previousQuestion |> (\q -> q.answerProp q.word) |> text ]
+            [ model.previousQuestion |> Maybe.map Question2.expected |> Maybe.withDefault "No Question wut ???" |> text ]
         , button [] [ text "Question suivante" ]
         ]
     ]
