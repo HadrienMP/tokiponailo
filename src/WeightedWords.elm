@@ -92,9 +92,9 @@ update word oddUpdate weighed =
         |> List.map
             (\( odd, w ) ->
                 if word.tokiPona == w.tokiPona then
-                    ( oddUpdate odd, word )
+                    ( oddUpdate odd, w )
 
                 else
-                    ( odd, word )
+                    ( odd, w )
             )
 

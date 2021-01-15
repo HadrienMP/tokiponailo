@@ -77,7 +77,7 @@ update msg model =
 
         ( Check, Just question ) ->
             let
-                updater = if Question2.isRight model.actual question then (\it -> it - 1) else (+) 2
+                updater = if Question2.isRight model.actual question then (\_ -> 0) else (+) 2
                 updatedWords = WeightedWords.update question.word updater model.words
             in
             ( { model
