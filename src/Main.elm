@@ -6,7 +6,7 @@ import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, p, span, text)
 import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import Question2
+import Question
 import Random exposing (Generator)
 import WeightedWords exposing (WeightedWord)
 
@@ -30,8 +30,8 @@ main =
 
 type alias Model =
     { day : Day
-    , question : Maybe Question2.Question
-    , previousQuestion : Maybe Question2.Question
+    , question : Maybe Question.Question
+    , previousQuestion : Maybe Question.Question
     , actual: String
     , previousActual: String
     , words : List WeightedWord
@@ -64,7 +64,7 @@ init _ =
 type Msg
     = Check
     | ActualChanged String
-    | SelectedQuestion (Maybe Question2.Question)
+    | SelectedQuestion (Maybe Question.Question)
     | SelectDay (Maybe Day)
     | NextQuestion
 
@@ -77,7 +77,7 @@ update msg model =
 
         ( Check, Just question ) ->
             let
-                updater = if Question2.isRight model.actual question then (\_ -> 0) else (+) 2
+                updater = if Question.isRight model.actual question then (\_ -> 0) else (+) 2
                 updatedWords = WeightedWords.update question.word updater model.words
             in
             ( { model
@@ -104,14 +104,14 @@ update msg model =
 
 
 pickQuestion words =
-    WeightedWords.pickWord2 words
-    |> Random.andThen jojo
+    WeightedWords.pickWord words
+    |> Random.andThen pickQuestionProperty
     |> Random.generate SelectedQuestion
 
-jojo mWord =
+pickQuestionProperty mWord =
     case mWord of
         Just word ->
-            Question2.pickQuestion word
+            Question.pickQuestion word
         Nothing ->
             Random.constant Nothing
 
@@ -137,7 +137,7 @@ mainHtml : Model -> List (Html Msg)
 mainHtml model =
     case model.previousQuestion of
         Just previousQuestion ->
-            if Question2.isRight model.previousActual previousQuestion then
+            if Question.isRight model.previousActual previousQuestion then
                 questionHtml model
 
             else
@@ -190,7 +190,7 @@ errorHtml model =
         , p [ id "wrong" ]
             [ model.previousActual |> text ]
         , p [ id "right" ]
-            [ model.previousQuestion |> Maybe.map Question2.expected |> Maybe.withDefault "No Question wut ???" |> text ]
+            [ model.previousQuestion |> Maybe.map Question.expected |> Maybe.withDefault "No Question wut ???" |> text ]
         , button [] [ text "Question suivante" ]
         ]
     ]

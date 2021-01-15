@@ -1,25 +1,69 @@
 module Question exposing (..)
 
 import Dictionary exposing (Language(..), Word)
+import Random
+import ValueList
+import WeightedWords
+
 
 type alias Question =
-    { questionProp : Word -> String
-    , answerProp : Word -> String
-    , word : Word
-    , actual : String
+    { word: Word
+    , type_: Type
+    , toTranslate: String
     }
 
-
-type alias QuestionProp =
-    Word -> String
-type alias AnswerProp =
-    Word -> String
-
-wasRight : Question -> Bool
-wasRight question =
-    (question.answerProp question.word) == question.actual
+type alias Answer = String
 
 
-updateActual : String -> Question -> Question
-updateActual actual question =
-    { question | actual = actual }
+type Type
+    = TokTokiPona
+    | FromTokiPona
+
+pickQuestion: Word -> Random.Generator (Maybe Question)
+pickQuestion word =
+    pickQuestionType
+    |> Random.andThen (toQuestion word)
+
+toQuestion word type_=
+    pickToTranslate word type_
+    |> Random.map (Maybe.map (Question word type_))
+
+pickToTranslate: Word -> Type -> Random.Generator (Maybe String)
+pickToTranslate word type_ =
+    case type_ of
+        TokTokiPona ->
+            WeightedWords.pickMeaning word
+        FromTokiPona ->
+            Random.constant <| Just <| word.tokiPona
+
+
+pickQuestionType: Random.Generator Type
+pickQuestionType = Random.uniform TokTokiPona [FromTokiPona]
+
+isRight: Answer -> Question -> Bool
+isRight answer question =
+    case question.type_ of
+        TokTokiPona ->
+            answer == question.word.tokiPona
+        FromTokiPona ->
+            String.split "," answer
+            |> List.map String.trim
+            |> List.map (\answerWord -> hasMeaning answerWord question.word)
+            |> List.foldr (&&) True
+
+expected: Question -> String
+expected question =
+    case question.type_ of
+        TokTokiPona ->
+            question.word.tokiPona
+        FromTokiPona ->
+            question.word.meanings
+            |> ValueList.get French
+            |> Maybe.withDefault []
+            |> List.foldr (\a b -> a ++ ", " ++ b) ""
+
+hasMeaning: String -> Word -> Bool
+hasMeaning meaning word =
+    ValueList.get French word.meanings
+    |> Maybe.map (\meanings -> List.member meaning meanings)
+    |> Maybe.withDefault False
