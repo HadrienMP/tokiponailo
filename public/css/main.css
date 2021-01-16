@@ -210,7 +210,7 @@ button img {
 /* line 1, ../../sass/_chat.scss */
 #chat-board {
   position: absolute;
-  top: 66px;
+  top: 0;
   bottom: 40px;
   overflow: hidden;
   width: 300px;
