@@ -20,7 +20,7 @@ type alias Word =
 
 
 all : List Word
-all = day1 ++ day2 ++ day3 ++ day4 ++ day5 ++ day6 ++ day7 ++ day8
+all = day1 ++ day2 ++ day3 ++ day4 ++ day5 ++ day6 ++ day7 ++ day8 ++ day9
 
 
 day1 : List Word
@@ -272,6 +272,44 @@ day8 =
       }
     ]
         |> List.map (toWord Day.Eight)
+
+
+day9 =
+    [ { tokiPona = "lon"
+      , meanings = [ ( French, [ "sur", "dans", "situé à", "réel", "vrai", "actuel" ] ) ]
+      }
+    , { tokiPona = "tawa"
+      , meanings = [ ( French, [ "vers", "pour", "du point de vue de", "aller" ] ) ]
+      }
+    , { tokiPona = "kepeken"
+      , meanings = [ ( French, [ "avec" ] ) ]
+      }
+    , { tokiPona = "tan"
+      , meanings = [ ( French, [ "de", "à cause de" ] ) ]
+      }
+    , { tokiPona = "wawa"
+      , meanings = [ ( French, [ "fort", "sûr", "intense" ] ) ]
+      }
+    , { tokiPona = "insa"
+      , meanings = [ ( French, [ "centre", "contenu", "intérieur" ] ) ]
+      }
+    , { tokiPona = "monsi"
+      , meanings = [ ( French, [ "dos", "arrière" ] ) ]
+      }
+    , { tokiPona = "poka"
+      , meanings = [ ( French, [ "hanche", "côté", "proximité" ] ) ]
+      }
+    , { tokiPona = "sewi"
+      , meanings = [ ( French, [ "dessus", "sacré" ] ) ]
+      }
+    , { tokiPona = "sewi"
+      , meanings = [ ( French, [ "dessus", "sacré" ] ) ]
+      }
+    , { tokiPona = "sinpin"
+      , meanings = [ ( French, [ "avant", "visage", "mur" ] ) ]
+      }
+    ]
+        |> List.map (toWord Day.Nine)
 
 
 toWord day minimal =
