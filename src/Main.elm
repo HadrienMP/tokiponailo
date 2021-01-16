@@ -1,12 +1,13 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
+import Chat exposing (Board, Message)
 import Day exposing (Day(..))
 import Dictionary exposing (Language(..), Word)
 import Html exposing (Html, button, div, form, h1, h2, header, img, input, p, span, text)
-import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
+import Html.Attributes exposing (attribute, autofocus, class, id, placeholder, src, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
-import Question2
+import Question
 import Random exposing (Generator)
 import WeightedWords exposing (WeightedWord)
 
@@ -23,18 +24,19 @@ main =
         , subscriptions = subscriptions
         }
 
-
+port chatMessage : String -> Cmd msg
 
 -- MODEL
 
 
 type alias Model =
     { day : Day
-    , question : Maybe Question2.Question
-    , previousQuestion : Maybe Question2.Question
-    , actual: String
-    , previousActual: String
+    , question : Maybe Question.Question
+    , previousQuestion : Maybe Question.Question
+    , actual : String
+    , previousActual : String
     , words : List WeightedWord
+    , chat : List Message
     }
 
 
@@ -50,6 +52,10 @@ init _ =
             , words =
                 Dictionary.all
                     |> WeightedWords.weigh
+            , chat =
+                [ Message Chat.Teacher "Salut salut !"
+                , Message Chat.Teacher "C'est parti, travaillons ton toki pona."
+                ]
             }
     in
     ( model
@@ -64,7 +70,7 @@ init _ =
 type Msg
     = Check
     | ActualChanged String
-    | SelectedQuestion (Maybe Question2.Question)
+    | SelectedQuestion (Maybe Question.Question)
     | SelectDay (Maybe Day)
     | NextQuestion
 
@@ -77,8 +83,29 @@ update msg model =
 
         ( Check, Just question ) ->
             let
-                updater = if Question2.isRight model.actual question then (\it -> it - 1) else (+) 2
-                updatedWords = WeightedWords.update question.word updater model.words
+                isRight =
+                    Question.isRight model.actual question
+
+                updater =
+                    if isRight then
+                        \_ -> 0
+
+                    else
+                        (+) 2
+
+                updatedWords =
+                    WeightedWords.update question.word updater model.words
+
+                newMessages =
+                    [ Message Chat.Student model.actual
+                    , Message Chat.Teacher
+                        (if isRight then
+                            "C'est bon !"
+
+                         else
+                            "Raté. C'était " ++ Question.expected question
+                        )
+                    ]
             in
             ( { model
                 | question = Nothing
@@ -86,15 +113,21 @@ update msg model =
                 , actual = ""
                 , previousActual = model.actual
                 , words = updatedWords
+                , chat = model.chat ++ newMessages
               }
-            , pickQuestion model.words
+            , Cmd.batch [chatMessage "", pickQuestion model.words]
             )
 
         ( SelectDay (Just day), _ ) ->
             ( { model | day = day }, pickQuestion model.words )
 
-        ( SelectedQuestion question, _ ) ->
-            ( { model | question = question }, Cmd.none )
+        ( SelectedQuestion (Just question), _ ) ->
+            ( { model
+                | question = Just question
+                , chat = model.chat ++ [ Message Chat.Teacher <| "Traduis \"" ++ question.toTranslate ++ "\"" ]
+              }
+            , chatMessage ""
+            )
 
         ( NextQuestion, _ ) ->
             ( { model | previousQuestion = Nothing }, Cmd.none )
@@ -104,16 +137,20 @@ update msg model =
 
 
 pickQuestion words =
-    WeightedWords.pickWord2 words
-    |> Random.andThen jojo
-    |> Random.generate SelectedQuestion
+    WeightedWords.pickWord words
+        |> Random.andThen pickQuestionProperty
+        |> Random.generate SelectedQuestion
 
-jojo mWord =
+
+pickQuestionProperty mWord =
     case mWord of
         Just word ->
-            Question2.pickQuestion word
+            Question.pickQuestion word
+
         Nothing ->
             Random.constant Nothing
+
+
 
 -- VIEW
 
@@ -123,77 +160,47 @@ view model =
     div [ id "under" ]
         [ header
             []
-            [ img [ src "logo2.png" ] []
+            [ img [ src "img/logo2.png" ] []
             , div [ id "title" ]
                 [ h1 [] [ text "Toki Pona" ]
                 , h2 [] [ text "12 jours, vocabulaire" ]
                 ]
             ]
-        , div [ id "main" ] (mainHtml model)
+        , div [ id "main" ]
+            [ chatBoard model
+            , messageBox model
+            ]
         ]
 
 
-mainHtml : Model -> List (Html Msg)
-mainHtml model =
-    case model.previousQuestion of
-        Just previousQuestion ->
-            if Question2.isRight model.previousActual previousQuestion then
-                questionHtml model
-
-            else
-                errorHtml model
-
-        Nothing ->
-            questionHtml model
+chatBoard : Model -> Html Msg
+chatBoard model =
+    div [ id "chat-board" ] (List.map messageHtml model.chat)
 
 
-questionHtml: Model -> List (Html Msg)
-questionHtml model =
-    case model.question of
-        Just question ->
-            [ p [ id "toTranslate" ]
-                [ text "Traduisez "
-                , span
-                    [ id "to-translate" ]
-                    [ question.toTranslate |> text ]
-                ]
-            , form
-                [ onSubmit Check ]
-                [ input
-                    [ type_ "text"
-                    , placeholder "toki pona"
-                    , onInput ActualChanged
-                    , model.actual |> value
-                    , autofocus True
-                    ]
-                    []
-                , button
-                    [ type_ "submit" ]
-                    [ text "Vérifier" ]
-                ]
-            ]
-
-        Nothing ->
-            [ p [] [ text "Loading" ] ]
-
-
-errorHtml: Model -> List (Html Msg)
-errorHtml model =
-    [ div
-        [ id "message", onClick NextQuestion ]
-        [ p [ id "toTranslate" ]
-            [ text "Traduisez "
-            , span
-                [ id "to-translate" ]
-                [ model.previousQuestion |> Maybe.map .toTranslate |> Maybe.withDefault "No Question wut ???" |> text ]
-            ]
-        , p [ id "wrong" ]
-            [ model.previousActual |> text ]
-        , p [ id "right" ]
-            [ model.previousQuestion |> Maybe.map Question2.expected |> Maybe.withDefault "No Question wut ???" |> text ]
-        , button [] [ text "Question suivante" ]
+messageHtml m =
+    div
+        [ class <| Debug.toString m.sender ++ " message" ]
+        [ Chat.icon m.sender
+        , p [ class "content" ] [ text m.content ]
         ]
-    ]
+
+
+messageBox model =
+    form
+        [ onSubmit Check ]
+        [ input
+            [ type_ "text"
+            , placeholder "toki pona"
+            , onInput ActualChanged
+            , model.actual |> value
+            , autofocus True
+            ]
+            []
+        , button
+            [ type_ "submit" ]
+            [ img [src "img/icons/send-plane-2-fill.svg"] [] ]
+        ]
 
 
 

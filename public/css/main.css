@@ -1,0 +1,294 @@
+/* line 5, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+/* line 22, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+html {
+  line-height: 1;
+}
+
+/* line 24, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 26, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 28, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+/* line 30, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q, blockquote {
+  quotes: none;
+}
+/* line 103, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+/* line 32, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+a img {
+  border: none;
+}
+
+/* line 116, ../../../../../../.gem/ruby/2.7.0/gems/compass-core-1.0.3/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+/* line 3, ../../sass/main.scss */
+body {
+  /*background: #f12711; !* fallback for old browsers *!*/
+  /*background: -webkit-linear-gradient(to right, #f5af19, #f12711); !* Chrome 10-25, Safari 5.1-6 *!*/
+  /*background: linear-gradient(to right, #f5af19, #f12711); !* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+  background: repeating-radial-gradient(circle at bottom left, #fedc00, #fcb712, #f7921e, #e87f24, #dd6227, #dc4c27, #ca3435, #b82841, #953751, #364c88, #16599d, #02609e, #0073a9, #008aa4, #239a87, #7cba6d, #becc2f, #e0d81d), repeating-radial-gradient(circle at bottom right, #fedc00, #fcb712, #f7921e, #e87f24, #dd6227, #dc4c27, #ca3435, #b82841, #953751, #364c88, #16599d, #02609e, #0073a9, #008aa4, #239a87, #7cba6d, #becc2f, #e0d81d);
+  background-blend-mode: overlay;
+  background-attachment: fixed;
+  height: 100vh;
+  color: white;
+  font-family: 'Fira Code', monospace;
+  text-align: justify;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 20, ../../sass/main.scss */
+#under {
+  background: url("pattern.png") fixed;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+/* line 29, ../../sass/main.scss */
+body * {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* line 34, ../../sass/main.scss */
+#main {
+  width: 300px;
+  margin: auto;
+}
+
+/* line 39, ../../sass/main.scss */
+#under header {
+  margin: 0 0 20px;
+  box-shadow: 0 2px 10px #111;
+  background: url("pattern.png") #00a49b;
+  padding: 4px 10px 10px;
+  text-align: center;
+  position: relative;
+  z-index: 10;
+}
+
+/* line 49, ../../sass/main.scss */
+header img {
+  width: 40px;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: sub;
+}
+
+/* line 56, ../../sass/main.scss */
+header #title {
+  display: inline-block;
+}
+
+/* line 60, ../../sass/main.scss */
+h1 {
+  font-size: 2.4em;
+  margin: 0;
+}
+
+/* line 65, ../../sass/main.scss */
+h2 {
+  margin: -7px 0 0;
+  position: relative;
+  left: 2px;
+  font-size: 1em;
+  font-weight: normal;
+}
+
+/* line 73, ../../sass/main.scss */
+#message {
+  cursor: pointer;
+}
+
+/* line 77, ../../sass/main.scss */
+#toTranslate {
+  text-align: justify;
+}
+
+/* line 81, ../../sass/main.scss */
+#to-translate {
+  font-weight: bold;
+  font-size: 1.2em;
+  letter-spacing: 1px;
+}
+
+/* line 87, ../../sass/main.scss */
+header, form {
+  margin: 30px 0;
+}
+
+/* line 91, ../../sass/main.scss */
+input, button, select, label {
+  border-radius: 0;
+  color: white;
+  background: none;
+  border: none;
+  border-bottom: 2px solid;
+}
+
+/* line 99, ../../sass/main.scss */
+select {
+  appearance: none;
+  cursor: pointer;
+}
+
+/* line 104, ../../sass/main.scss */
+input:focus, button:focus {
+  outline: none;
+}
+
+/* line 108, ../../sass/main.scss */
+input {
+  width: 70%;
+  vertical-align: bottom;
+  font-size: 1.5em;
+  padding: 0 0 0 5px;
+}
+
+/* line 115, ../../sass/main.scss */
+input::placeholder {
+  color: #ddd;
+}
+
+/* line 119, ../../sass/main.scss */
+button {
+  width: 30%;
+  padding: 0;
+  cursor: pointer;
+  text-align: right;
+}
+/* line 125, ../../sass/main.scss */
+button img {
+  height: 1.4em;
+}
+
+/* line 1, ../../sass/_chat.scss */
+#chat-board {
+  position: absolute;
+  top: 66px;
+  bottom: 80px;
+  overflow: hidden;
+  width: 300px;
+  padding-top: 20px;
+}
+/* line 9, ../../sass/_chat.scss */
+#chat-board .message.Teacher + .message.Student {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+/* line 14, ../../sass/_chat.scss */
+#chat-board .message {
+  margin: 4px 0;
+  clear: both;
+  position: relative;
+}
+/* line 19, ../../sass/_chat.scss */
+#chat-board .message .icon {
+  width: 32px;
+  height: 32px;
+  background: #00a49b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  border-radius: 100%;
+  padding: 4px;
+}
+/* line 31, ../../sass/_chat.scss */
+#chat-board .message.Teacher .icon {
+  float: left;
+}
+/* line 35, ../../sass/_chat.scss */
+#chat-board .message.Teacher .content {
+  margin-left: 50px;
+  background-color: #e0fffc;
+}
+/* line 39, ../../sass/_chat.scss */
+#chat-board .message.Teacher .content:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 9px;
+  left: 35px;
+  border: .5rem solid transparent;
+  border-right-color: #e0fffc;
+}
+/* line 53, ../../sass/_chat.scss */
+#chat-board .message.Student .icon {
+  float: right;
+  background: #eb7219;
+}
+/* line 57, ../../sass/_chat.scss */
+#chat-board .message.Student .content {
+  margin-right: 50px;
+}
+/* line 60, ../../sass/_chat.scss */
+#chat-board .message.Student .content:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 9px;
+  right: 35px;
+  border: .5rem solid transparent;
+  border-left-color: white;
+}
+/* line 73, ../../sass/_chat.scss */
+#chat-board .message .content {
+  padding: 8px 12px;
+  background: white;
+  color: black;
+  border-radius: 5px;
+}
+
+/* line 132, ../../sass/main.scss */
+#main form {
+  position: absolute;
+  bottom: 0;
+  width: 300px;
+}
