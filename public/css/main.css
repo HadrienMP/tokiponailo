@@ -211,15 +211,15 @@ button img {
 #chat-board {
   position: absolute;
   top: 0;
-  bottom: 40px;
+  bottom: 50px;
   overflow: hidden;
   width: 300px;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 /* line 9, ../../sass/_chat.scss */
 #chat-board .message.Teacher + .message.Student {
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 /* line 14, ../../sass/_chat.scss */
 #chat-board .message {
