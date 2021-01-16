@@ -211,7 +211,7 @@ button img {
 #chat-board {
   position: absolute;
   top: 66px;
-  bottom: 80px;
+  bottom: 35px;
   overflow: hidden;
   width: 300px;
   padding-top: 20px;
@@ -291,4 +291,5 @@ button img {
   position: absolute;
   bottom: 0;
   width: 300px;
+  margin: 0;
 }
