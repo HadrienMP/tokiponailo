@@ -180,7 +180,7 @@ chatBoard model =
 
 messageHtml m =
     div
-        [ class <| Debug.toString m.sender ++ " message" ]
+        [ class <| Chat.toString m.sender ++ " message" ]
         [ Chat.icon m.sender
         , p [ class "content" ] [ text m.content ]
         ]

@@ -26,3 +26,12 @@ icon sender =
 
         Teacher ->
             img [ class "icon", alt "teacher", src "img/icons/emotion-laugh-line.svg" ] []
+
+
+toString sender =
+    case sender of
+        Student ->
+            "Student"
+
+        Teacher ->
+            "Teacher"
