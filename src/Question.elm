@@ -60,7 +60,7 @@ expected question =
             question.word.meanings
             |> ValueList.get French
             |> Maybe.withDefault []
-            |> List.foldr (\a b -> a ++ ", " ++ b) ""
+            |> String.join ", "
 
 hasMeaning: String -> Word -> Bool
 hasMeaning meaning word =
