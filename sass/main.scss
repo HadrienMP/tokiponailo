@@ -40,17 +40,17 @@ body * {
   margin: 0 0 20px;
   box-shadow: 0 2px 10px #111;
   background: url("pattern.png") #00a49b;
-  padding: 4px 10px 10px;
+  padding: 4px 10px;
   text-align: center;
   position: relative;
   z-index: 10;
 }
 
 header img {
-  width: 40px;
+  height: 1.4em;
   margin-right: 10px;
   display: inline-block;
-  vertical-align: sub;
+  vertical-align: bottom;
 }
 
 header #title {
@@ -58,7 +58,7 @@ header #title {
 }
 
 h1 {
-  font-size: 2.4em;
+  font-size: 1.4em;
   margin: 0;
 }
 
@@ -133,5 +133,5 @@ button {
   position: absolute;
   bottom: 0;
   width: 300px;
-  margin: 0;
+  margin-bottom: 6px;
 }

@@ -158,15 +158,7 @@ pickQuestionProperty mWord =
 view : Model -> Html Msg
 view model =
     div [ id "under" ]
-        [ header
-            []
-            [ img [ src "img/logo2.png" ] []
-            , div [ id "title" ]
-                [ h1 [] [ text "Toki Pona" ]
-                , h2 [] [ text "12 jours, vocabulaire" ]
-                ]
-            ]
-        , div [ id "main" ]
+        [ div [ id "main" ]
             [ chatBoard model
             , messageBox model
             ]
