@@ -1,0 +1,10 @@
+{
+  "name": "Toki Pona Ilo",
+  "short_name": "TPI",
+  "theme_color": "#ffffff",
+  "background_color": "#00a49b",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
