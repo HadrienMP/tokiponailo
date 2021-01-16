@@ -19,6 +19,20 @@ type alias Message =
     }
 
 
+append : Board -> Board -> Board
+append a b =
+    b ++ a |> preserveSize
+
+
+preserveSize : Board -> Board
+preserveSize board =
+    let
+        over =
+            max 0 (List.length board - 20)
+    in
+    List.drop over board
+
+
 icon sender =
     case sender of
         Student ->
