@@ -44,9 +44,13 @@ isRight: Answer -> Question -> Bool
 isRight answer question =
     case question.type_ of
         TokTokiPona ->
-            answer == question.word.tokiPona
+            answer
+            |> String.toLower
+            |> (==) question.word.tokiPona
         FromTokiPona ->
-            String.split "," answer
+            answer
+            |> String.toLower
+            |> String.split ","
             |> List.map String.trim
             |> List.map (\answerWord -> hasMeaning answerWord question.word)
             |> List.foldr (&&) True
