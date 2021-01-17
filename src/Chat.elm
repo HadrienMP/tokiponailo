@@ -44,8 +44,12 @@ preserveSize board =
     let
         over =
             max 0 (List.length board - 20)
+        newBoard = List.drop over board
     in
-    List.drop over board
+    if over > 0 then
+        (p [ class "ellipsis" ] [text "..."] ) :: newBoard
+    else
+        newBoard
 
 
 icon sender =

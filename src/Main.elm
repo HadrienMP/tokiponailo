@@ -62,7 +62,7 @@ init _ =
             }
     in
     ( model
-    , pickQuestion model.words
+    , pickQuestion model.words ""
     )
 
 
@@ -73,7 +73,7 @@ init _ =
 type Msg
     = Check
     | ActualChanged String
-    | SelectedQuestion (Maybe Question.Question)
+    | SelectedQuestion String (Maybe Question.Question)
     | SelectDay (Maybe Day)
     | NextQuestion
     | ChatMsg Chat.Msg
@@ -100,16 +100,15 @@ update msg model =
                 updatedWords =
                     WeightedWords.update question.word updater model.words
 
+                next = if isRight then "👍" else ""
+                studentMessage = Chat.stringToMessage Chat.Student model.actual
                 newMessages =
-                    [ Chat.stringToMessage Chat.Student model.actual
-                    , Chat.stringToMessage Chat.Teacher
-                        (if isRight then
-                            "C'est bon !"
-
-                         else
-                            "Raté. C'était " ++ Question.expected question
-                        )
-                    ]
+                    if isRight then
+                        [studentMessage]
+                    else
+                       [ Chat.stringToMessage Chat.Student model.actual
+                       , Chat.stringToMessage Chat.Teacher ("C'était " ++ Question.expected question ++ " 😥")
+                       ]
             in
             ( { model
                 | question = Nothing
@@ -119,18 +118,18 @@ update msg model =
                 , words = updatedWords
                 , chatBoard = Chat.append newMessages model.chatBoard
               }
-            , Cmd.batch [ chatMessage "", pickQuestion model.words ]
+            , Cmd.batch [ chatMessage "", pickQuestion model.words next ]
             )
 
         ( SelectDay (Just day), _ ) ->
-            ( { model | day = day }, pickQuestion model.words )
+            ( { model | day = day }, pickQuestion model.words "" )
 
-        ( SelectedQuestion (Just question), _ ) ->
+        ( SelectedQuestion next (Just question), _ ) ->
             ( { model
                 | question = Just question
                 , chatBoard =
                     Chat.append
-                        [ translateHtml question.toTranslate ]
+                        [ translateHtml next question.toTranslate ]
                         model.chatBoard
               }
             , chatMessage ""
@@ -142,19 +141,19 @@ update msg model =
         _ ->
             ( model, Cmd.none )
 
-translateHtml : String -> Message
-translateHtml toTranslate =
+translateHtml : String -> String -> Message
+translateHtml next toTranslate =
     Chat.toMessage
         Chat.Teacher
-        [ text "Traduis \""
+        [ text <| next ++ " Traduis \""
         , strong [] [ text toTranslate ]
         , text "\""
         ]
 
-pickQuestion words =
+pickQuestion words next =
     WeightedWords.pickWord words
         |> Random.andThen pickQuestionProperty
-        |> Random.generate SelectedQuestion
+        |> Random.generate (SelectedQuestion next)
 
 
 pickQuestionProperty mWord =
