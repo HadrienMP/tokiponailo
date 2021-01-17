@@ -332,7 +332,7 @@ day10 =
       , meanings = [ ( French, [ "nombre", "ième" ] ) ]
       }
     , { tokiPona = "nasin"
-      , meanings = [ ( French, [ "voix", "méthode", "coutume" ] ) ]
+      , meanings = [ ( French, [ "voie", "méthode", "coutume" ] ) ]
       }
     , { tokiPona = "nena"
       , meanings = [ ( French, [ "nez", "bosse", "colline" ] ) ]
