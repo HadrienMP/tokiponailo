@@ -323,7 +323,7 @@ day10 =
       , meanings = [ ( French, [ "deux" ] ) ]
       }
     , { tokiPona = "mute"
-      , meanings = [ ( French, [ "au moins trois, beaucoup, plusieurs, 20" ] ) ]
+      , meanings = [ ( French, [ "au moins trois", "beaucoup", "plusieurs", "20" ] ) ]
       }
     , { tokiPona = "ale"
       , meanings = [ ( French, [ "tout" ] ) ]
