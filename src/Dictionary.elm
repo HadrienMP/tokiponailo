@@ -20,7 +20,7 @@ type alias Word =
 
 
 all : List Word
-all = day1 ++ day2 ++ day3 ++ day4 ++ day5 ++ day6 ++ day7 ++ day8 ++ day9
+all = day1 ++ day2 ++ day3 ++ day4 ++ day5 ++ day6 ++ day7 ++ day8 ++ day9 ++ day10
 
 
 day1 : List Word
@@ -307,6 +307,41 @@ day9 =
       }
     , { tokiPona = "sinpin"
       , meanings = [ ( French, [ "avant", "visage", "mur" ] ) ]
+      }
+    ]
+        |> List.map (toWord Day.Nine)
+
+
+day10 =
+    [ { tokiPona = "ala"
+      , meanings = [ ( French, [ "zéro" ] ) ]
+      }
+    , { tokiPona = "wan"
+      , meanings = [ ( French, [ "un" ] ) ]
+      }
+    , { tokiPona = "tu"
+      , meanings = [ ( French, [ "deux" ] ) ]
+      }
+    , { tokiPona = "mute"
+      , meanings = [ ( French, [ "au moins trois, beaucoup, plusieurs, 20" ] ) ]
+      }
+    , { tokiPona = "ale"
+      , meanings = [ ( French, [ "tout" ] ) ]
+      }
+    , { tokiPona = "nanpa"
+      , meanings = [ ( French, [ "nomber", "ième" ] ) ]
+      }
+    , { tokiPona = "nasin"
+      , meanings = [ ( French, [ "voix", "méthode", "coutume" ] ) ]
+      }
+    , { tokiPona = "nena"
+      , meanings = [ ( French, [ "nez", "bosse", "colline" ] ) ]
+      }
+    , { tokiPona = "utala"
+      , meanings = [ ( French, [ "combat", "compétition" ] ) ]
+      }
+    , { tokiPona = "pilin"
+      , meanings = [ ( French, [ "sentir", "toucher", "émotion", "coeur" ] ) ]
       }
     ]
         |> List.map (toWord Day.Nine)

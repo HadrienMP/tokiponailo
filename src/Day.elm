@@ -13,6 +13,7 @@ type Day
     | Seven
     | Eight
     | Nine
+    | Ten
 
 
 type alias DayMap =
@@ -33,6 +34,7 @@ dayLabels =
     , DayMap Seven "Seven" 7
     , DayMap Eight "Eight" 8
     , DayMap Nine "Nine" 9
+    , DayMap Ten "Ten" 10
     ]
 
 
