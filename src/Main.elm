@@ -4,7 +4,7 @@ import Browser
 import Chat exposing (Board, Message)
 import Day exposing (Day(..))
 import Dictionary exposing (Language(..), Word)
-import Html exposing (Html, button, div, form, img, input, p, text)
+import Html exposing (Html, button, div, form, img, input, p, strong, text)
 import Html.Attributes exposing (autofocus, class, id, placeholder, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Question
@@ -56,8 +56,8 @@ init _ =
                 Dictionary.all
                     |> WeightedWords.weigh
             , chatBoard =
-                [ Message Chat.Teacher "Salut salut !"
-                , Message Chat.Teacher "C'est parti, travaillons ton toki pona."
+                [ Chat.stringToMessage Chat.Teacher "Salut salut !"
+                , Chat.stringToMessage Chat.Teacher "C'est parti, travaillons ton toki pona."
                 ]
             }
     in
@@ -76,6 +76,7 @@ type Msg
     | SelectedQuestion (Maybe Question.Question)
     | SelectDay (Maybe Day)
     | NextQuestion
+    | ChatMsg Chat.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -100,8 +101,8 @@ update msg model =
                     WeightedWords.update question.word updater model.words
 
                 newMessages =
-                    [ Message Chat.Student model.actual
-                    , Message Chat.Teacher
+                    [ Chat.stringToMessage Chat.Student model.actual
+                    , Chat.stringToMessage Chat.Teacher
                         (if isRight then
                             "C'est bon !"
 
@@ -129,7 +130,7 @@ update msg model =
                 | question = Just question
                 , chatBoard =
                     Chat.append
-                        [ Message Chat.Teacher <| "Traduis \"" ++ question.toTranslate ++ "\"" ]
+                        [ translateHtml question.toTranslate ]
                         model.chatBoard
               }
             , chatMessage ""
@@ -141,6 +142,14 @@ update msg model =
         _ ->
             ( model, Cmd.none )
 
+translateHtml : String -> Message
+translateHtml toTranslate =
+    Chat.toMessage
+        Chat.Teacher
+        [ text "Traduis \""
+        , strong [] [ text toTranslate ]
+        , text "\""
+        ]
 
 pickQuestion words =
     WeightedWords.pickWord words
@@ -173,15 +182,8 @@ view model =
 
 chatBoard : Model -> Html Msg
 chatBoard model =
-    div [ id "chat-board" ] (List.map messageHtml model.chatBoard)
-
-
-messageHtml m =
-    div
-        [ class <| Chat.toString m.sender ++ " message" ]
-        [ Chat.icon m.sender
-        , p [ class "content" ] [ text m.content ]
-        ]
+    div [ id "chat-board" ] model.chatBoard
+        |> Html.map ChatMsg
 
 
 messageBox model =

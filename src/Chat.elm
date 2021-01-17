@@ -1,7 +1,11 @@
 module Chat exposing (..)
 
-import Html exposing (img)
+import Html exposing (Html, div, img, p, text)
 import Html.Attributes exposing (alt, class, src)
+
+
+type Msg
+    = Nope
 
 
 type Sender
@@ -14,9 +18,20 @@ type alias Board =
 
 
 type alias Message =
-    { sender : Sender
-    , content : String
-    }
+    Html Msg
+
+
+stringToMessage : Sender -> String -> Message
+stringToMessage sender content =
+    toMessage sender [ text content ]
+
+toMessage : Sender -> List (Html Msg) -> Message
+toMessage sender content =
+    div
+        [ class <| toString sender ++ " message" ]
+        [ icon sender
+        , p [ class "content" ] content
+        ]
 
 
 append : Board -> Board -> Board
