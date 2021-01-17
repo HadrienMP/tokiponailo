@@ -13,7 +13,29 @@ type alias WeightedWord =
 
 weigh : List Word -> List WeightedWord
 weigh words =
-    List.map (\word -> ( 1 * Day.toInt word.day, word )) words
+    let
+        max : Int
+        max =
+            words
+                |> List.reverse
+                |> List.head
+                |> Maybe.map .day
+                |> Maybe.map Day.toInt
+                |> Maybe.withDefault 0
+    in
+    words
+    |> List.map (\word -> (toOdd (Day.toInt word.day) max, word ))
+
+toOdd : Int -> Int -> Int
+toOdd number max =
+    if number == max then
+        6
+    else if number == max - 1 then
+        3
+    else
+        1
+
+
 
 
 
@@ -54,8 +76,8 @@ update word oddUpdate weighed =
         |> List.map
             (\( odd, w ) ->
                 if word.tokiPona == w.tokiPona then
-                    ( oddUpdate odd, w )
-
+                    ( max 0 <| oddUpdate odd, w )
                 else
                     ( odd, w )
             )
+        |> List.filter (\(weight, _) -> weight /= 0)
