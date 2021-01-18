@@ -4,8 +4,8 @@ import Browser
 import Chat exposing (Board, Message)
 import Day exposing (Day(..))
 import Dictionary exposing (Language(..), Word)
-import Html exposing (Html, button, div, form, img, input, p, strong, text)
-import Html.Attributes exposing (autofocus, class, id, placeholder, src, type_, value)
+import Html exposing (Html, button, div, form, img, input, strong, text)
+import Html.Attributes exposing (autofocus, id, placeholder, src, type_, value)
 import Html.Events exposing (onInput, onSubmit)
 import Question
 import Random exposing (Generator)
@@ -151,7 +151,8 @@ translateHtml next toTranslate =
         ]
 
 pickQuestion words next =
-    WeightedWords.pickWord words
+    Day.pick
+        |> Random.andThen (WeightedWords.pick words)
         |> Random.andThen pickQuestionProperty
         |> Random.generate (SelectedQuestion next)
 

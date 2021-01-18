@@ -344,7 +344,7 @@ day10 =
       , meanings = [ ( French, [ "sentir", "toucher", "émotion", "coeur" ] ) ]
       }
     ]
-        |> List.map (toWord Day.Nine)
+        |> List.map (toWord Day.Ten)
 
 
 toWord day minimal =

@@ -1,6 +1,7 @@
 module Day exposing (..)
 
 import Random
+import Random.List as Random
 
 
 type Day
@@ -36,6 +37,13 @@ dayLabels =
     , DayMap Nine "Nine" 9
     , DayMap Ten "Ten" 10
     ]
+
+pick : Random.Generator Day
+pick =
+    Random.weighted (6, [Ten]) [(3, [Nine]), (1, [One, Two, Three, Four, Five, Six, Seven, Eight])]
+    |> Random.andThen Random.choose
+    |> Random.map Tuple.first
+    |> Random.map (Maybe.withDefault Ten)
 
 
 toString : Day -> String

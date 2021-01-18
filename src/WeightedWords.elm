@@ -42,9 +42,10 @@ toOdd number max =
 -- PICK
 
 
-pickWord : List WeightedWord -> Random.Generator (Maybe Word)
-pickWord words =
-    words
+pick : List WeightedWord -> Day.Day -> Random.Generator (Maybe Word)
+pick words day =
+    Debug.log (Debug.toString day) words
+        |> List.filter (\(_, word) -> word.day == day)
         |> List.map (\it -> Tuple.mapFirst toFloat it)
         |> (\it -> ( List.head it, List.tail it ))
         |> (\it ->
