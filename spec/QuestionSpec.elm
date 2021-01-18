@@ -3,7 +3,6 @@ module QuestionSpec exposing (..)
 import Day
 import Dictionary exposing (Language(..), Word)
 import Expect
-import Question exposing (answer, weigh)
 import Test exposing (Test, describe, test)
 
 
