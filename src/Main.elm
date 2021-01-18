@@ -151,10 +151,17 @@ translateHtml next toTranslate =
         ]
 
 pickQuestion words next =
-    Day.pick
+    Day.pick (availableDays words)
         |> Random.andThen (WeightedWords.pick words)
         |> Random.andThen pickQuestionProperty
         |> Random.generate (SelectedQuestion next)
+
+availableDays : List WeightedWord -> List Day
+availableDays words =
+    words
+    |> List.map Tuple.second
+    |> List.map .day
+    |> List.foldr (\day days -> if List.member day days then days else day :: days) []
 
 
 pickQuestionProperty mWord =

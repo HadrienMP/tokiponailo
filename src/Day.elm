@@ -38,13 +38,36 @@ dayLabels =
     , DayMap Ten "Ten" 10
     ]
 
-pick : Random.Generator Day
-pick =
-    Random.weighted (6, [Ten]) [(3, [Nine]), (1, [One, Two, Three, Four, Five, Six, Seven, Eight])]
-    |> Random.andThen Random.choose
-    |> Random.map Tuple.first
-    |> Random.map (Maybe.withDefault Ten)
 
+pick : List Day -> Random.Generator Day
+pick days =
+    let
+        reversed = List.reverse days
+        stuff : List (Maybe (List Day))
+        stuff =
+            [ List.head reversed |> Maybe.map (\a -> [a])
+            , List.tail reversed |> Maybe.andThen List.head |> Maybe.map (\a -> [a])
+            , List.tail reversed |> Maybe.andThen List.tail
+            ]
+    in
+    stuff
+        |> toto
+        |> Maybe.map (\a -> Random.weighted (Tuple.first a) (Tuple.second a))
+        |> Maybe.map (Random.andThen Random.choose)
+        |> Maybe.map (Random.map Tuple.first)
+        |> Maybe.map (Random.map (Maybe.withDefault Ten))
+        |> Maybe.withDefault (Random.constant Ten)
+
+toto : List (Maybe (List Day)) -> Maybe ((Float, List Day), List (Float, List Day))
+toto jojo =
+    case jojo of
+        [Just first, Just second, Just others] ->
+            Just ((6, first), [(3, second), (1, others)])
+        [Just first, Just second, Nothing] ->
+            Just ((2, first), [(1, second)])
+        [Just first, Nothing, Nothing] ->
+            Just ((1, first), [])
+        _ -> Nothing
 
 toString : Day -> String
 toString day =
