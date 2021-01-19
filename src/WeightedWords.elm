@@ -44,7 +44,7 @@ toOdd number max =
 
 pick : List WeightedWord -> Day.Day -> Random.Generator (Maybe Word)
 pick words day =
-    Debug.log (Debug.toString day) words
+    words
         |> List.filter (\(_, word) -> word.day == day)
         |> List.map (\it -> Tuple.mapFirst toFloat it)
         |> (\it -> ( List.head it, List.tail it ))
